@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Product Details - HunarHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>HunarHub</h2>
+
+    <div class="nav-links">
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="orders.html">Orders</a>
+
+        <a href="profile.html">Profile</a>
+
+        <a href="#" onclick="logout()">Logout</a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= PRODUCT DETAILS ================= -->
+
+<div class="container">
+
+    <h1>Product Details</h1>
+
+    <p class="page-description">
+        Explore handmade products crafted by local entrepreneurs.
+    </p>
+
+    <div id="productDetails" class="product-card">
+
+        Loading product...
+
+    </div>
+
+
+    <hr>
+
+    <!-- ================= REVIEWS ================= -->
+
+    <h2>Customer Reviews</h2>
+
+    <div id="reviewList">
+
+        Loading reviews...
+
+    </div>
+
+
+    <hr>
+
+    <!-- ================= ADD REVIEW ================= -->
+
+    <h2>Add Review</h2>
+
+    <input
+        type="number"
+        id="rating"
+        placeholder="Rating (1-5)"
+        min="1"
+        max="5">
+
+    <br><br>
+
+    <textarea
+        id="comment"
+        rows="5"
+        placeholder="Write your review here..."></textarea>
+
+    <br><br>
+
+    <button onclick="addReview()">
+        Submit Review
+    </button>
+
+    <br><br>
+
+    <button onclick="goProducts()">
+        Back to Products
+    </button>
+
+</div>
+
+
+<script>
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href="login.html";
+
+}
+
+</script>
+
+<script src="js/product-details.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>HunarHub Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>HunarHub</h2>
+
+    <div class="nav-links">
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="orders.html">Orders</a>
+
+        <a href="profile.html">Profile</a>
+
+        <a href="#" onclick="logout()">Logout</a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+
+<h1>
+Welcome to HunarHub 👋
+</h1>
+
+
+<p class="page-description">
+
+Manage your products, orders and activities here.
+
+</p>
+
+
+
+<!-- ================= STATISTICS ================= -->
+
+
+<div class="dashboard-stats">
+
+
+<div class="stat-card">
+
+<h2 id="productCount">
+0
+</h2>
+
+<p>
+Products
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h2 id="orderCount">
+0
+</h2>
+
+<p>
+Orders
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h2 id="reviewCount">
+0
+</h2>
+
+<p>
+Reviews
+</p>
+
+</div>
+
+
+
+<div class="stat-card">
+
+<h2>
+Active
+</h2>
+
+<p>
+Account Status
+</p>
+
+</div>
+
+
+</div>
+
+    <hr>
+
+    <div id="serviceRequestsSection">
+
+        <h2>Service Requests</h2>
+
+        <div id="requestList">
+
+            Loading requests...
+
+        </div>
+
+    </div>
+
+    <hr>
+
+    <div id="ordersSection">
+
+    <h2>
+        Recent Orders
+    </h2>
+
+
+    <div id="recentOrders">
+
+        Loading orders...
+
+    </div>
+
+
+</div>
+
+</div>
+
+<script src="js/dashboard.js"></script>
+
+</body>
+
+</html>

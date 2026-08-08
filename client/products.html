@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>HunarHub Products</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>
+        HunarHub
+    </h2>
+
+
+    <div class="nav-links">
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+
+        <a href="products.html">
+            Products
+        </a>
+
+
+        <a href="orders.html">
+            Orders
+        </a>
+
+
+        <a href="profile.html">
+            Profile
+        </a>
+
+
+        <a href="#" onclick="logout()">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+
+<!-- ================= PRODUCTS SECTION ================= -->
+
+
+<div class="container">
+
+
+    <h1>
+        Available Products
+    </h1>
+
+
+    <p class="page-description">
+
+        Explore handmade products from local entrepreneurs
+
+    </p>
+
+    <div class="search-section">
+
+    <input
+        type="text"
+        id="searchInput"
+        placeholder="🔍 Search products..."
+        onkeyup="searchProducts()">
+
+</div>
+
+
+<div class="category-filter">
+
+    <button onclick="filterProducts('All')">All</button>
+
+    <button onclick="filterProducts('Pottery')">Pottery</button>
+
+    <button onclick="filterProducts('Wood Craft')">Wood Craft</button>
+
+    <button onclick="filterProducts('Handicraft')">Handicraft</button>
+
+    <button onclick="filterProducts('Traditional Craft')">Traditional Craft</button>
+
+    <button onclick="filterProducts('Artwork')">Artwork</button>
+
+    <button onclick="filterProducts('Textile')">Textile</button>
+
+</div>
+
+    <div id="productList" class="product-grid">
+
+        Loading products...
+
+    </div>
+
+
+</div>
+
+
+
+<script src="js/products.js"></script>
+
+
+<script>
+
+
+// ================= LOGOUT =================
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href="login.html";
+
+}
+
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+    <title>Orders - HunarHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>HunarHub</h2>
+
+    <div class="nav-links">
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="products.html">Products</a>
+
+        <a href="orders.html">Orders</a>
+
+        <a href="profile.html">Profile</a>
+
+        <a href="#" onclick="logout()">Logout</a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ORDERS ================= -->
+
+<div class="container">
+
+    <h1>My Orders</h1>
+
+    <p class="page-description">
+
+        Track all your product orders here.
+
+    </p>
+
+    <div id="orderList" class="empty-message">
+
+    Loading orders...
+
+</div>
+
+    <br>
+
+    <button onclick="goDashboard()">
+
+        Dashboard
+
+    </button>
+
+</div>
+
+<script>
+
+function logout(){
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href="login.html";
+
+}
+
+</script>
+
+<script src="js/orders.js"></script>
+
+</body>
+
+</html>
