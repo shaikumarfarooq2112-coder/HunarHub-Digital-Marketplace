@@ -202,7 +202,7 @@ form.addEventListener(
 
 
             window.location.href =
-                "service-requests.html";
+                "service-request.html";
 
 
         }
