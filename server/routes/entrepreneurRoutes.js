@@ -2,23 +2,30 @@ const express = require("express");
 
 const router = express.Router();
 
+
+// ================= CONTROLLERS =================
+
 const {
     createProfile,
     getEntrepreneurs,
-    getEntrepreneurById
+    getEntrepreneurById,
+    updateAvailability,
+    getEarnings
 } = require("../controllers/entrepreneurController");
 
-const authMiddleware = require("../middleware/authMiddleware");
 
+// ================= AUTH MIDDLEWARE =================
 
-// Create Entrepreneur Profile
+const authMiddleware =
+    require("../middleware/authMiddleware");
+
 
 router.post(
     "/create",
     authMiddleware,
     createProfile
 );
-// Get all entrepreneurs
+
 
 router.get(
     "/",
@@ -26,7 +33,19 @@ router.get(
 );
 
 
-// Get entrepreneur by ID
+router.get(
+    "/earnings",
+    authMiddleware,
+    getEarnings
+);
+
+
+router.put(
+    "/availability",
+    authMiddleware,
+    updateAvailability
+);
+
 
 router.get(
     "/:id",

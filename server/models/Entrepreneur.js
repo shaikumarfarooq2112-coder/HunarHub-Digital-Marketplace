@@ -55,7 +55,12 @@ const entrepreneurSchema = new mongoose.Schema({
     verified: {
         type: Boolean,
         default: false
-    }
+    },
+
+    availability: {
+    type: Boolean,
+    default: true
+}
 
 
 }, {

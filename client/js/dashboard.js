@@ -1,9 +1,8 @@
-// ================= CHECK LOGIN TOKEN =================
+// =====================================================
+// CHECK LOGIN TOKEN
+// =====================================================
 
 const token = localStorage.getItem("token");
-
-
-// If token does not exist, send user to login page
 
 if (!token) {
 
@@ -14,615 +13,678 @@ if (!token) {
 }
 
 
-// ================= LOGOUT FUNCTION =================
+// =====================================================
+// LOGOUT
+// =====================================================
 
 function logout() {
 
-
     localStorage.removeItem("token");
-
 
     alert("Logout successful");
 
-
     window.location.href = "login.html";
 
+}
+
+
+// =====================================================
+// GET USER ROLE
+// =====================================================
+
+let user = null;
+
+try {
+
+    user = JSON.parse(
+        atob(token.split(".")[1])
+    );
+
+}
+catch (error) {
+
+    console.log("Invalid token");
 
 }
 
 
-
-// ================= GET ENTREPRENEUR REQUESTS =================
-
-
-async function getServiceRequests(){
-
-
-    try{
-
-
-        const response = await fetch(
-
-            "http://localhost:5000/api/service-requests/entrepreneur",
-
-            {
-
-                method:"GET",
-
-                headers:{
-
-                    "Authorization":
-                    "Bearer " + token
-
-                }
-
-            }
-
-        );
-
-
-
-        const data = await response.json();
-
-
-
-        const requestList =
-        document.getElementById("requestList");
-
-
-
-        if(!requestList){
-
-            return;
-
-        }
-
-
-
-        requestList.innerHTML = "";
-
-
-
-        if(data.requests.length === 0){
-
-
-            requestList.innerHTML =
-            "<p>No service requests found</p>";
-
-
-            return;
-
-        }
-
-
-
-        data.requests.forEach(request => {
-
-
-
-            const card =
-            document.createElement("div");
-
-
-
-            card.className =
-            "product-card";
-
-
-
-            card.innerHTML = `
-
-
-                <h3>
-                    ${request.service}
-                </h3>
-
-
-                <p>
-                    Customer:
-                    ${request.customer.name}
-                </p>
-
-
-                <p>
-                    Description:
-                    ${request.description}
-                </p>
-
-
-                <p>
-                    Date:
-                    ${request.date}
-                </p>
-
-
-                <p>
-                    Status:
-                    ${request.status}
-                </p>
-
-
-
-                <button onclick="updateStatus('${request._id}','Accepted')">
-
-                    Accept
-
-                </button>
-
-
-
-                <button onclick="updateStatus('${request._id}','Rejected')">
-
-                    Reject
-
-                </button>
-
-
-            `;
-
-
-
-            requestList.appendChild(card);
-
-
-        });
-
-
-
-    }
-    catch(error){
-
-
-        console.log(error);
-
-
-    }
-
-
-}
-
-
-
-
-// ================= UPDATE REQUEST STATUS =================
-
-
-async function updateStatus(id,status){
-
-
-    try{
-
-
-        const response = await fetch(
-
-            `http://localhost:5000/api/service-requests/update/${id}`,
-
-            {
-
-                method:"PUT",
-
-                headers:{
-
-                    "Content-Type":"application/json",
-
-                    "Authorization":
-                    "Bearer " + token
-
-                },
-
-
-                body:JSON.stringify({
-
-                    status
-
-                })
-
-            }
-
-        );
-
-
-
-        const data = await response.json();
-
-
-
-        alert(data.message);
-
-
-
-        getServiceRequests();
-
-
-
-    }
-    catch(error){
-
-
-        console.log(error);
-
-
-    }
-
-
-}
-
-
-
-// Load requests when dashboard opens
-
-const user = JSON.parse(
-    atob(token.split(".")[1])
-);
-
-if(user.role === "entrepreneur"){
-
-    getServiceRequests();
-
-    getEntrepreneurOrders();
-
-}
-else{
-
-    const serviceSection =
-    document.getElementById("serviceRequestsSection");
-
-    if(serviceSection){
-
-        serviceSection.style.display = "none";
-
-    }
-
-    const ordersSection =
-    document.getElementById("ordersSection");
-
-    if(ordersSection){
-
-        ordersSection.style.display = "none";
-
-    }
-
-}
-function goOrders(){
-
-    window.location.href = "orders.html";
-
-}
-// ================= GET ENTREPRENEUR ORDERS =================
-
-async function getEntrepreneurOrders() {
+// =====================================================
+// GET ENTREPRENEUR SERVICE REQUESTS
+// =====================================================
+
+async function getServiceRequests() {
 
     try {
 
         const response = await fetch(
-
-            "http://localhost:5000/api/orders/entrepreneur",
-
+            "http://localhost:5000/api/service-requests/entrepreneur",
             {
 
                 method: "GET",
 
                 headers: {
 
-                    "Authorization": "Bearer " + token
-
-                }
-
-            }
-
-        );
-
-        const data = await response.json();
-
-        const ordersList = document.getElementById("ordersList");
-
-        if (!ordersList) return;
-
-        ordersList.innerHTML = "";
-
-        if (!data.orders || data.orders.length === 0) {
-
-            ordersList.innerHTML = "<p>No orders found</p>";
-
-            return;
-
-        }
-
-        data.orders.forEach(order => {
-
-            const card = document.createElement("div");
-
-            card.className = "product-card";
-
-            card.innerHTML = `
-
-                <h3>${order.product.name}</h3>
-
-                <p>
-                    Customer:
-                    ${order.customer.name}
-                </p>
-
-                <p>
-                    Quantity:
-                    ${order.quantity}
-                </p>
-
-                <p>
-                    Total Price:
-                    ₹${order.totalPrice}
-                </p>
-
-                <p>
-                    Status:
-                    ${order.status}
-                </p>
-
-                <button onclick="updateOrderStatus('${order._id}','Confirmed')">
-                    Confirm
-                </button>
-
-                <button onclick="updateOrderStatus('${order._id}','Completed')">
-                    Complete
-                </button>
-
-                <button onclick="updateOrderStatus('${order._id}','Cancelled')">
-                    Cancel
-                </button>
-
-            `;
-
-            ordersList.appendChild(card);
-
-        });
-
-    } catch (error) {
-
-        console.log(error);
-
-    }
-
-}
-
-
-
-// ================= UPDATE ORDER STATUS =================
-
-async function updateOrderStatus(id, status) {
-
-    try {
-
-        const response = await fetch(
-
-            `http://localhost:5000/api/orders/update/${id}`,
-
-            {
-
-                method: "PUT",
-
-                headers: {
-
-                    "Content-Type": "application/json",
-
-                    "Authorization": "Bearer " + token
-
-                },
-
-                body: JSON.stringify({
-
-                    status
-
-                })
-
-            }
-
-        );
-
-        const data = await response.json();
-
-        alert(data.message);
-
-        getEntrepreneurOrders();
-
-    } catch (error) {
-
-        console.log(error);
-
-    }
-
-}
-// ================= DASHBOARD STATISTICS =================
-
-
-async function loadDashboardStats(){
-
-
-    const token = localStorage.getItem("token");
-
-
-    try{
-
-
-        // PRODUCTS COUNT
-
-        const productResponse = await fetch(
-            "http://localhost:5000/api/products"
-        );
-
-
-        const productData =
-        await productResponse.json();
-
-
-        document.getElementById(
-            "productCount"
-        ).innerHTML =
-        productData.products.length;
-
-
-
-        // ORDERS COUNT
-
-        const orderResponse = await fetch(
-
-            "http://localhost:5000/api/orders/my-orders",
-
-            {
-
-                headers:{
-
                     "Authorization":
-                    "Bearer " + token
+                        "Bearer " + token
 
                 }
 
             }
-
-        );
-
-
-        const orderData =
-        await orderResponse.json();
-
-
-
-        document.getElementById(
-            "orderCount"
-        ).innerHTML =
-        orderData.orders.length;
-
-
-
-        // REVIEWS COUNT
-
-        document.getElementById(
-            "reviewCount"
-        ).innerHTML =
-        "0";
-
-
-
-    }
-
-    catch(error){
-
-        console.log(error);
-
-    }
-
-
-}
-
-
-
-loadDashboardStats();
-// ================= RECENT ORDERS =================
-
-async function loadRecentOrders(){
-
-
-    const token = localStorage.getItem("token");
-
-
-    try{
-
-
-        const response = await fetch(
-
-            "http://localhost:5000/api/orders/my-orders",
-
-            {
-
-                headers:{
-
-                    "Authorization":
-                    "Bearer " + token
-
-                }
-
-            }
-
         );
 
 
         const data =
-        await response.json();
+            await response.json();
 
 
-
-        const orderDiv =
-        document.getElementById("recentOrders");
-
-
-
-        orderDiv.innerHTML="";
+        const requestList =
+            document.getElementById(
+                "requestList"
+            );
 
 
-
-        if(data.orders.length === 0){
-
-
-            orderDiv.innerHTML =
-            `
-            <div class="empty-message">
-            No orders available
-            </div>
-            `;
-
+        if (!requestList) {
 
             return;
 
         }
 
 
-
-        data.orders.slice(0,3).forEach(order=>{
-
-
-            orderDiv.innerHTML += `
-
-            <div class="product-card">
+        requestList.innerHTML = "";
 
 
-            <h3>
-            ${order.product.name}
-            </h3>
+        if (
+            !data.requests ||
+            data.requests.length === 0
+        ) {
+
+            requestList.innerHTML =
+                "<p>No service requests found.</p>";
+
+            return;
+
+        }
 
 
-            <p>
-            Price: ₹${order.totalPrice}
-            </p>
+        data.requests.forEach(
+            request => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
 
-            <p>
-            Status:
-
-            <span class="status ${order.status.toLowerCase()}">
-
-            ${order.status}
-
-            </span>
-
-            </p>
+                card.className =
+                    "product-card";
 
 
-            </div>
+                card.innerHTML = `
 
-            `;
+                    <h3>
+                        ${request.service}
+                    </h3>
+
+                    <p>
+                        <strong>Customer:</strong>
+                        ${request.customer?.name || "Unknown"}
+                    </p>
+
+                    <p>
+                        <strong>Description:</strong>
+                        ${request.description}
+                    </p>
+
+                    <p>
+                        <strong>Date:</strong>
+                        ${new Date(
+                            request.date
+                        ).toLocaleDateString()}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${request.status}
+                    </p>
 
 
-        });
+                    <button
+                        onclick="updateStatus(
+                            '${request._id}',
+                            'Accepted'
+                        )"
+                    >
+                        Accept
+                    </button>
 
 
+                    <button
+                        onclick="updateStatus(
+                            '${request._id}',
+                            'Rejected'
+                        )"
+                    >
+                        Reject
+                    </button>
+
+                `;
+
+
+                requestList.appendChild(
+                    card
+                );
+
+            }
+        );
 
     }
-    catch(error){
+    catch (error) {
 
-        console.log(error);
+        console.log(
+            "Service request error:",
+            error
+        );
 
     }
 
 }
 
 
-loadRecentOrders();
+// =====================================================
+// UPDATE SERVICE REQUEST STATUS
+// =====================================================
+
+async function updateStatus(
+    id,
+    status
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `http://localhost:5000/api/service-requests/update/${id}`,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body: JSON.stringify({
+
+                        status: status
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        getServiceRequests();
+
+    }
+    catch (error) {
+
+        console.log(
+            "Update service request error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// GET ENTREPRENEUR ORDERS
+// =====================================================
+
+async function getEntrepreneurOrders() {
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/orders/entrepreneur",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        const ordersList =
+            document.getElementById(
+                "recentOrders"
+            );
+
+
+        if (!ordersList) {
+
+            return;
+
+        }
+
+
+        ordersList.innerHTML = "";
+
+
+        if (
+            !data.orders ||
+            data.orders.length === 0
+        ) {
+
+            ordersList.innerHTML =
+                "<p>No orders found.</p>";
+
+            return;
+
+        }
+
+
+        data.orders
+            .slice(0, 5)
+            .forEach(order => {
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "product-card";
+
+
+                card.innerHTML = `
+
+                    <h3>
+                        ${order.product?.name ||
+                        "Product"}
+                    </h3>
+
+
+                    <p>
+                        <strong>Customer:</strong>
+                        ${order.customer?.name ||
+                        "Unknown"}
+                    </p>
+
+
+                    <p>
+                        <strong>Quantity:</strong>
+                        ${order.quantity}
+                    </p>
+
+
+                    <p>
+                        <strong>Total Price:</strong>
+                        ₹${order.totalPrice}
+                    </p>
+
+
+                    <p>
+                        <strong>Status:</strong>
+                        ${order.status}
+                    </p>
+
+
+                    <button
+                        onclick="updateOrderStatus(
+                            '${order._id}',
+                            'Confirmed'
+                        )"
+                    >
+                        Confirm
+                    </button>
+
+
+                    <button
+                        onclick="updateOrderStatus(
+                            '${order._id}',
+                            'Completed'
+                        )"
+                    >
+                        Complete
+                    </button>
+
+
+                    <button
+                        onclick="updateOrderStatus(
+                            '${order._id}',
+                            'Cancelled'
+                        )"
+                    >
+                        Cancel
+                    </button>
+
+                `;
+
+
+                ordersList.appendChild(
+                    card
+                );
+
+            });
+
+    }
+    catch (error) {
+
+        console.log(
+            "Entrepreneur orders error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// UPDATE ORDER STATUS
+// =====================================================
+
+async function updateOrderStatus(
+    id,
+    status
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `http://localhost:5000/api/orders/update/${id}`,
+                {
+
+                    method: "PUT",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json",
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    },
+
+                    body: JSON.stringify({
+
+                        status: status
+
+                    })
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        getEntrepreneurOrders();
+
+        loadEarnings();
+
+    }
+    catch (error) {
+
+        console.log(
+            "Update order error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// LOAD ENTREPRENEUR EARNINGS
+// =====================================================
+
+async function loadEarnings() {
+
+    if (!token) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                "http://localhost:5000/api/entrepreneurs/earnings",
+                {
+
+                    method: "GET",
+
+                    headers: {
+
+                        "Authorization":
+                            "Bearer " + token
+
+                    }
+
+                }
+            );
+
+
+        const data =
+            await response.json();
+
+
+        console.log(
+            "Earnings:",
+            data
+        );
+
+
+        if (!response.ok) {
+
+            console.log(
+                data.message
+            );
+
+            return;
+
+        }
+
+
+        const totalEarnings =
+            document.getElementById(
+                "totalEarnings"
+            );
+
+
+        const totalSales =
+            document.getElementById(
+                "totalSales"
+            );
+
+
+        const completedOrders =
+            document.getElementById(
+                "completedOrders"
+            );
+
+
+        const pendingOrders =
+            document.getElementById(
+                "pendingOrders"
+            );
+
+
+        const confirmedOrders =
+            document.getElementById(
+                "confirmedOrders"
+            );
+
+
+        if (totalEarnings) {
+
+            totalEarnings.textContent =
+                "₹" +
+                data.totalEarnings;
+
+        }
+
+
+        if (totalSales) {
+
+            totalSales.textContent =
+                "₹" +
+                data.totalSales;
+
+        }
+
+
+        if (completedOrders) {
+
+            completedOrders.textContent =
+                data.completedOrders;
+
+        }
+
+
+        if (pendingOrders) {
+
+            pendingOrders.textContent =
+                data.pendingOrders;
+
+        }
+
+
+        if (confirmedOrders) {
+
+            confirmedOrders.textContent =
+                data.confirmedOrders;
+
+        }
+
+    }
+    catch (error) {
+
+        console.log(
+            "Earnings error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// LOAD DASHBOARD
+// =====================================================
+
+function loadDashboard() {
+
+    if (!user) {
+
+        return;
+
+    }
+
+
+    // ENTREPRENEUR DASHBOARD
+
+    if (
+        user.role === "entrepreneur"
+    ) {
+
+        getServiceRequests();
+
+        getEntrepreneurOrders();
+
+        loadEarnings();
+
+    }
+
+
+    // CUSTOMER DASHBOARD
+
+    else {
+
+        const serviceSection =
+            document.getElementById(
+                "serviceRequestsSection"
+            );
+
+
+        if (serviceSection) {
+
+            serviceSection.style.display =
+                "none";
+
+        }
+
+
+        const ordersSection =
+            document.getElementById(
+                "ordersSection"
+            );
+
+
+        if (ordersSection) {
+
+            ordersSection.style.display =
+                "none";
+
+        }
+
+    }
+
+}
+
+
+// =====================================================
+// GO TO ORDERS
+// =====================================================
+
+function goOrders() {
+
+    window.location.href =
+        "orders.html";
+
+}
+
+
+// =====================================================
+// START DASHBOARD
+// =====================================================
+
+loadDashboard();

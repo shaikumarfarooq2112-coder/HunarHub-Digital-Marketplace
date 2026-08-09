@@ -10,7 +10,8 @@ const productRoutes = require("./routes/productRoutes");
 const serviceRequestRoutes = require("./routes/serviceRequestRoutes");
 const orderRoutes = require("./routes/orderRoutes");
 const reviewRoutes = require("./routes/reviewRoutes");
-
+const adminRoutes = require("./routes/adminRoutes");
+const complaintRoutes =require("./routes/complaintRoutes");
 
 // Load environment variables from .env
 dotenv.config();
@@ -38,6 +39,15 @@ app.use(
 );
 app.use("/api/orders", orderRoutes);
 app.use("/api/reviews", reviewRoutes);
+app.use(
+    "/api/complaints",
+    complaintRoutes
+);
+app.use(
+    "/api/admin",
+    adminRoutes
+);
+
 
 // Home route
 app.get("/", (req, res) => {

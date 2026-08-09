@@ -1,7 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
 
     <title>HunarHub Dashboard</title>
 
@@ -9,7 +14,9 @@
 
 </head>
 
+
 <body>
+
 
 <!-- ================= NAVBAR ================= -->
 
@@ -19,107 +26,158 @@
 
     <div class="nav-links">
 
-        <a href="dashboard.html">Dashboard</a>
+        <a href="dashboard.html">
+            Dashboard
+        </a>
 
-        <a href="products.html">Products</a>
+        <a href="products.html">
+            Products
+        </a>
 
-        <a href="orders.html">Orders</a>
+        <a href="service-request.html">
+            Request Service
+        </a>
 
-        <a href="profile.html">Profile</a>
+        <a href="orders.html">
+            Orders
+        </a>
 
-        <a href="#" onclick="logout()">Logout</a>
+        <a href="profile.html">
+            Profile
+        </a>
+
+        <a href="complaints.html">Complaints</a>
+
+        <a href="#" onclick="logout()">
+            Logout
+        </a>
 
     </div>
 
 </div>
 
 
-<!-- ================= MAIN CONTENT ================= -->
+<!-- ================= DASHBOARD ================= -->
 
 <div class="container">
 
 
-<h1>
-Welcome to HunarHub 👋
-</h1>
+    <h1>
+        Welcome to HunarHub Dashboard
+    </h1>
 
 
-<p class="page-description">
+    <p>
+        Manage your products, orders and activities here.
+    </p>
 
-Manage your products, orders and activities here.
-
-</p>
-
-
-
-<!-- ================= STATISTICS ================= -->
-
-
-<div class="dashboard-stats">
-
-
-<div class="stat-card">
-
-<h2 id="productCount">
-0
-</h2>
-
-<p>
-Products
-</p>
-
-</div>
-
-
-
-<div class="stat-card">
-
-<h2 id="orderCount">
-0
-</h2>
-
-<p>
-Orders
-</p>
-
-</div>
-
-
-
-<div class="stat-card">
-
-<h2 id="reviewCount">
-0
-</h2>
-
-<p>
-Reviews
-</p>
-
-</div>
-
-
-
-<div class="stat-card">
-
-<h2>
-Active
-</h2>
-
-<p>
-Account Status
-</p>
-
-</div>
-
-
-</div>
 
     <hr>
 
+
+    <!-- ================= EARNINGS OVERVIEW ================= -->
+
+    <section class="earnings-section">
+
+        <h2>
+            💰 Earnings Overview
+        </h2>
+
+
+        <div class="earnings-grid">
+
+
+            <!-- TOTAL EARNINGS -->
+
+            <div class="earnings-card">
+
+                <h3 id="totalEarnings">
+                    ₹0
+                </h3>
+
+                <p>
+                    Total Earnings
+                </p>
+
+            </div>
+
+
+            <!-- TOTAL SALES -->
+
+            <div class="earnings-card">
+
+                <h3 id="totalSales">
+                    ₹0
+                </h3>
+
+                <p>
+                    Total Sales
+                </p>
+
+            </div>
+
+
+            <!-- COMPLETED ORDERS -->
+
+            <div class="earnings-card">
+
+                <h3 id="completedOrders">
+                    0
+                </h3>
+
+                <p>
+                    Completed Orders
+                </p>
+
+            </div>
+
+
+            <!-- PENDING ORDERS -->
+
+            <div class="earnings-card">
+
+                <h3 id="pendingOrders">
+                    0
+                </h3>
+
+                <p>
+                    Pending Orders
+                </p>
+
+            </div>
+
+
+            <!-- CONFIRMED ORDERS -->
+
+            <div class="earnings-card">
+
+                <h3 id="confirmedOrders">
+                    0
+                </h3>
+
+                <p>
+                    Confirmed Orders
+                </p>
+
+            </div>
+
+
+        </div>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- ================= SERVICE REQUESTS ================= -->
+
     <div id="serviceRequestsSection">
 
-        <h2>Service Requests</h2>
+        <h2>
+            Service Requests
+        </h2>
+
 
         <div id="requestList">
 
@@ -129,27 +187,55 @@ Account Status
 
     </div>
 
+
     <hr>
+
+
+    <!-- ================= RECENT ORDERS ================= -->
 
     <div id="ordersSection">
 
-    <h2>
-        Recent Orders
-    </h2>
+        <h2>
+            Recent Orders
+        </h2>
 
 
-    <div id="recentOrders">
+        <div id="recentOrders">
 
-        Loading orders...
+            Loading orders...
+
+        </div>
 
     </div>
 
 
 </div>
 
-</div>
+
+<!-- ================= JAVASCRIPT ================= -->
 
 <script src="js/dashboard.js"></script>
+
+
+<script>
+
+
+// ================= LOGOUT =================
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href =
+        "login.html";
+
+}
+
+
+</script>
+
 
 </body>
 

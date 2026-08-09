@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>HunarHub | Admin Dashboard</title>
+
+    <link rel="stylesheet" href="css/style.css">
+
+</head>
+
+<body>
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>HunarHub Admin</h2>
+
+    <div class="nav-links">
+
+        <a href="index.html">Home</a>
+
+        <a href="dashboard.html">Dashboard</a>
+
+        <a href="#" onclick="logout()">Logout</a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+
+<div class="container">
+
+    <h1>Admin Dashboard</h1>
+
+    <p class="page-description">
+        Manage HunarHub users, entrepreneurs, products,
+        orders and service requests.
+    </p>
+
+
+    <!-- ================= STATISTICS ================= -->
+
+    <div class="admin-stats">
+
+        <div class="stat-card">
+
+            <h2 id="totalUsers">0</h2>
+
+            <p>Total Users</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="totalEntrepreneurs">0</h2>
+
+            <p>Entrepreneurs</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="pendingEntrepreneurs">0</h2>
+
+            <p>Pending Approval</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="totalProducts">0</h2>
+
+            <p>Total Products</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="totalOrders">0</h2>
+
+            <p>Total Orders</p>
+
+        </div>
+
+
+        <div class="stat-card">
+
+            <h2 id="totalRequests">0</h2>
+
+            <p>Service Requests</p>
+
+        </div>
+
+    </div>
+
+
+    <!-- ================= ENTREPRENEUR APPROVAL ================= -->
+
+    <section class="admin-section">
+
+        <h2>
+            Entrepreneur Approval
+        </h2>
+
+        <p>
+            Review and verify local entrepreneurs.
+        </p>
+
+
+        <div id="entrepreneurList">
+
+            Loading entrepreneurs...
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= ORDERS ================= -->
+
+    <section class="admin-section">
+
+        <h2>
+            Recent Orders
+        </h2>
+
+        <div id="orderList">
+
+            Loading orders...
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= SERVICE REQUESTS ================= -->
+
+    <section class="admin-section">
+
+        <h2>
+            Service Requests
+        </h2>
+
+        <div id="requestList">
+
+            Loading service requests...
+
+        </div>
+
+    </section>
+
+
+    <!-- ================= USERS ================= -->
+
+    <section class="admin-section">
+
+        <h2>
+            Registered Users
+        </h2>
+
+        <div id="userList">
+
+            Loading users...
+
+        </div>
+
+    </section>
+
+</div>
+
+
+<script src="js/admin.js"></script>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href = "login.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>

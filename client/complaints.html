@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>HunarHub | Complaints</title>
+
+    <link rel="stylesheet"
+          href="css/style.css">
+
+</head>
+
+<body>
+
+
+<!-- ================= NAVBAR ================= -->
+
+<div class="navbar">
+
+    <h2>HunarHub</h2>
+
+    <div class="nav-links">
+
+        <a href="dashboard.html">
+            Dashboard
+        </a>
+
+        <a href="products.html">
+            Products
+        </a>
+
+        <a href="orders.html">
+            Orders
+        </a>
+
+        <a href="profile.html">
+            Profile
+        </a>
+
+        <a href="complaints.html">
+            Complaints
+        </a>
+
+        <a href="#"
+           onclick="logout()">
+            Logout
+        </a>
+
+    </div>
+
+</div>
+
+
+<!-- ================= MAIN CONTENT ================= -->
+
+<div class="container">
+
+    <h1>
+        Complaints & Support
+    </h1>
+
+    <p>
+        Submit a complaint or report an issue with
+        an order or service.
+    </p>
+
+
+    <!-- ================= COMPLAINT FORM ================= -->
+
+    <section class="complaint-form">
+
+        <h2>
+            Submit a Complaint
+        </h2>
+
+
+        <form id="complaintForm">
+
+    <label>
+        Complaint Subject
+    </label>
+
+    <input
+        type="text"
+        id="subject"
+        placeholder="Enter complaint subject"
+        required
+    >
+
+    <label>
+        Description
+    </label>
+
+    <textarea
+        id="description"
+        rows="5"
+        placeholder="Describe your complaint..."
+        required
+    ></textarea>
+
+    <button type="submit">
+        Submit Complaint
+    </button>
+
+</form>
+
+    </section>
+
+
+    <hr>
+
+
+    <!-- ================= MY COMPLAINTS ================= -->
+
+    <section>
+
+        <h2>
+            My Complaints
+        </h2>
+
+
+        <div id="complaintList">
+
+            Loading complaints...
+
+        </div>
+
+    </section>
+
+
+</div>
+
+
+<script src="js/complaints.js"></script>
+
+
+<script>
+
+function logout() {
+
+    localStorage.removeItem("token");
+
+    alert("Logout successful");
+
+    window.location.href =
+        "login.html";
+
+}
+
+</script>
+
+
+</body>
+
+</html>
