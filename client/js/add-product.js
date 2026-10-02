@@ -46,7 +46,7 @@ async function addProduct() {
         console.log("Sending request to backend...");
         const response = await fetch(
 
-            "http://localhost:5000/api/products/create",
+            "https://hunarhub-backend-2788.onrender.com/api/products/create",
 
             {
 

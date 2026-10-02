@@ -57,7 +57,7 @@ async function getServiceRequests() {
     try {
 
         const response = await fetch(
-            "http://localhost:5000/api/service-requests/entrepreneur",
+            "http://https://hunarhub-backend-2788.onrender.com/api/service-requests/entrepreneur",
             {
 
                 method: "GET",
@@ -203,7 +203,7 @@ async function updateStatus(
 
         const response =
             await fetch(
-                `http://localhost:5000/api/service-requests/update/${id}`,
+                `http://https://hunarhub-backend-2788.onrender.com/api/service-requests/update/${id}`,
                 {
 
                     method: "PUT",
@@ -260,7 +260,7 @@ async function getEntrepreneurOrders() {
 
         const response =
             await fetch(
-                "http://localhost:5000/api/orders/entrepreneur",
+                "http://https://hunarhub-backend-2788.onrender.com/api/orders/entrepreneur",
                 {
 
                     method: "GET",
@@ -420,7 +420,7 @@ async function updateOrderStatus(
 
         const response =
             await fetch(
-                `http://localhost:5000/api/orders/update/${id}`,
+                `http://https://hunarhub-backend-2788.onrender.com/api/orders/update/${id}`,
                 {
 
                     method: "PUT",
@@ -486,7 +486,7 @@ async function loadEarnings() {
 
         const response =
             await fetch(
-                "http://localhost:5000/api/entrepreneurs/earnings",
+                "http://https://hunarhub-backend-2788.onrender.com/api/entrepreneurs/earnings",
                 {
 
                     method: "GET",

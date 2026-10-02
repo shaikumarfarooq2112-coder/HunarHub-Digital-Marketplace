@@ -86,7 +86,7 @@ async function loadComplaints() {
 
         const response =
             await fetch(
-                "http://localhost:5000/api/complaints",
+                "http://https://hunarhub-backend-2788.onrender.com/api/complaints",
                 {
 
                     method: "GET",
@@ -354,7 +354,7 @@ async function updateComplaint(id) {
 
         const response =
             await fetch(
-                `http://localhost:5000/api/complaints/update/${id}`,
+                `http://https://hunarhub-backend-2788.onrender.com/api/complaints/update/${id}`,
                 {
 
                     method: "PUT",

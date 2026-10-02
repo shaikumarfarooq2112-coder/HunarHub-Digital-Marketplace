@@ -24,7 +24,7 @@ async function getMyOrders(){
 
         const response = await fetch(
 
-            "http://localhost:5000/api/orders/my-orders",
+            "http://https://hunarhub-backend-2788.onrender.com/api/orders/my-orders",
 
             {
 
