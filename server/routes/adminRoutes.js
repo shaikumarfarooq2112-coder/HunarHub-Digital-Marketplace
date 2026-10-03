@@ -13,21 +13,18 @@ const adminMiddleware =
 
 // Controller
 const {
-
     getDashboardStats,
-
     getEntrepreneurs,
-
     approveEntrepreneur,
-
     rejectEntrepreneur,
-
     getOrders,
-
     getServiceRequests,
-
-    getUsers
-
+    getUsers,
+    getCategories,
+    addCategory,
+    addSkill,
+    deleteCategory,
+    deleteSkill
 } = require("../controllers/adminController");
 
 
@@ -149,5 +146,47 @@ router.get(
 
 );
 
+// =====================================================
+// CATEGORY MANAGEMENT
+// =====================================================
+
+router.get(
+    "/categories",
+    authMiddleware,
+    adminMiddleware,
+    getCategories
+);
+
+
+router.post(
+    "/categories",
+    authMiddleware,
+    adminMiddleware,
+    addCategory
+);
+
+
+router.post(
+    "/categories/:id/skills",
+    authMiddleware,
+    adminMiddleware,
+    addSkill
+);
+
+
+router.delete(
+    "/categories/:id",
+    authMiddleware,
+    adminMiddleware,
+    deleteCategory
+);
+
+
+router.delete(
+    "/categories/:id/skills/:skill",
+    authMiddleware,
+    adminMiddleware,
+    deleteSkill
+);
 
 module.exports = router;

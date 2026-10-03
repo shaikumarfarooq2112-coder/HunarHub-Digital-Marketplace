@@ -745,6 +745,448 @@ async function loadUsers() {
 
 
 // =====================================================
+// LOAD CATEGORIES
+// =====================================================
+
+async function loadCategories() {
+
+    try {
+
+        const response = await fetch(
+            "https://hunarhub-backend-i8s7.onrender.com/api/admin/categories",
+            {
+                method: "GET",
+                headers: headers
+            }
+        );
+
+
+        const data = await response.json();
+
+
+        const container =
+            document.getElementById(
+                "categoryList"
+            );
+
+
+        container.innerHTML = "";
+
+
+        if (
+            !data.categories ||
+            data.categories.length === 0
+        ) {
+
+            container.innerHTML = `
+                <div class="admin-card">
+                    <p>No categories found.</p>
+                </div>
+            `;
+
+            return;
+
+        }
+
+
+        data.categories.forEach(category => {
+
+            const card =
+                document.createElement("div");
+
+
+            card.className =
+                "admin-card";
+
+
+            let skillsHTML = "";
+
+
+            if (
+                category.skills &&
+                category.skills.length > 0
+            ) {
+
+                skillsHTML =
+                    category.skills.map(
+                        skill => `
+                            <li>
+                                ${skill}
+
+                                <button
+                                    onclick="deleteSkill(
+                                        '${category._id}',
+                                        '${encodeURIComponent(skill)}'
+                                    )"
+                                >
+                                    Delete
+                                </button>
+                            </li>
+                        `
+                    ).join("");
+
+            }
+            else {
+
+                skillsHTML =
+                    "<li>No skills added yet.</li>";
+
+            }
+
+
+            card.innerHTML = `
+
+                <h3>
+                    ${category.name}
+                </h3>
+
+
+                <p>
+                    <strong>
+                        Skills:
+                    </strong>
+                </p>
+
+
+                <ul>
+                    ${skillsHTML}
+                </ul>
+
+
+                <input
+                    type="text"
+                    id="skill-${category._id}"
+                    placeholder="Enter skill"
+                >
+
+
+                <button
+                    onclick="addSkill(
+                        '${category._id}'
+                    )"
+                >
+                    Add Skill
+                </button>
+
+
+                <button
+                    onclick="deleteCategory(
+                        '${category._id}'
+                    )"
+                >
+                    Delete Category
+                </button>
+
+            `;
+
+
+            container.appendChild(card);
+
+        });
+
+    }
+    catch (error) {
+
+        console.error(
+            "Category error:",
+            error
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// ADD CATEGORY
+// =====================================================
+
+async function addCategory() {
+
+    const input =
+        document.getElementById(
+            "categoryName"
+        );
+
+
+    const name =
+        input.value.trim();
+
+
+    if (!name) {
+
+        alert(
+            "Please enter a category name."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+
+            "https://hunarhub-backend-i8s7.onrender.com/api/admin/categories",
+
+            {
+
+                method: "POST",
+
+                headers: headers,
+
+                body: JSON.stringify({
+                    name
+                })
+
+            }
+
+        );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            input.value = "";
+
+            loadCategories();
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to add category."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// ADD SKILL
+// =====================================================
+
+async function addSkill(categoryId) {
+
+    const input =
+        document.getElementById(
+            "skill-" + categoryId
+        );
+
+
+    const skill =
+        input.value.trim();
+
+
+    if (!skill) {
+
+        alert(
+            "Please enter a skill."
+        );
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+
+            `https://hunarhub-backend-i8s7.onrender.com/api/admin/categories/${categoryId}/skills`,
+
+            {
+
+                method: "POST",
+
+                headers: headers,
+
+                body: JSON.stringify({
+                    skill
+                })
+
+            }
+
+        );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            input.value = "";
+
+            loadCategories();
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to add skill."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// DELETE CATEGORY
+// =====================================================
+
+async function deleteCategory(id) {
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this category?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+
+            `https://hunarhub-backend-i8s7.onrender.com/api/admin/categories/${id}`,
+
+            {
+
+                method: "DELETE",
+
+                headers: headers
+
+            }
+
+        );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            loadCategories();
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to delete category."
+        );
+
+    }
+
+}
+
+
+// =====================================================
+// DELETE SKILL
+// =====================================================
+
+async function deleteSkill(
+    categoryId,
+    encodedSkill
+) {
+
+    const skill =
+        decodeURIComponent(
+            encodedSkill
+        );
+
+
+    const confirmDelete =
+        confirm(
+            "Are you sure you want to delete this skill?"
+        );
+
+
+    if (!confirmDelete) {
+
+        return;
+
+    }
+
+
+    try {
+
+        const response = await fetch(
+
+            `https://hunarhub-backend-i8s7.onrender.com/api/admin/categories/${categoryId}/skills/${encodeURIComponent(skill)}`,
+
+            {
+
+                method: "DELETE",
+
+                headers: headers
+
+            }
+
+        );
+
+
+        const data =
+            await response.json();
+
+
+        alert(data.message);
+
+
+        if (response.ok) {
+
+            loadCategories();
+
+        }
+
+    }
+    catch (error) {
+
+        console.error(error);
+
+        alert(
+            "Unable to delete skill."
+        );
+
+    }
+
+}
+
+
+// =====================================================
 // LOAD EVERYTHING
 // =====================================================
 
@@ -757,3 +1199,5 @@ loadOrders();
 loadServiceRequests();
 
 loadUsers();
+
+loadCategories();
