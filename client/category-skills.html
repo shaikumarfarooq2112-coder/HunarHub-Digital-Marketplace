@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Category & Skills - HunarHub</title>
+
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <nav>
+        <h2>HunarHub Admin</h2>
+
+        <div>
+            <a href="admin.html">Dashboard</a>
+            <a href="category-skills.html">Category & Skills</a>
+            <a href="admin-complaints.html">Complaints</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </nav>
+
+    <main class="container">
+
+        <h1>Category & Skill Management</h1>
+
+        <p>
+            Add and manage marketplace categories and skills.
+        </p>
+
+        <!-- ADD CATEGORY -->
+
+        <section class="admin-section">
+
+            <h2>Add New Category</h2>
+
+            <input
+                type="text"
+                id="categoryName"
+                placeholder="Enter category name"
+            >
+
+            <button onclick="addCategory()">
+                Add Category
+            </button>
+
+        </section>
+
+        <!-- CATEGORY LIST -->
+
+        <section class="admin-section">
+
+            <h2>Existing Categories</h2>
+
+            <div id="categoryList">
+                Loading categories...
+            </div>
+
+        </section>
+
+    </main>
+
+    <script src="js/category-skills.js"></script>
+
+</body>
+
+</html>

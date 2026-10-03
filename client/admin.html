@@ -1,15 +1,18 @@
 <!DOCTYPE html>
+
 <html lang="en">
 
 <head>
 
-    <meta charset="UTF-8">
+```
+<meta charset="UTF-8">
 
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HunarHub | Admin Dashboard</title>
+<title>HunarHub | Admin Dashboard</title>
 
-    <link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css">
+```
 
 </head>
 
@@ -19,165 +22,177 @@
 
 <div class="navbar">
 
-    <h2>HunarHub Admin</h2>
+```
+<h2>HunarHub Admin</h2>
 
-    <div class="nav-links">
+<div class="nav-links">
 
-        <a href="index.html">Home</a>
+    <a href="index.html">Home</a>
 
-        <a href="dashboard.html">Dashboard</a>
+    <a href="dashboard.html">Dashboard</a>
 
-        <a href="#" onclick="logout()">Logout</a>
+    <a href="admin.html">Admin</a>
+
+    <a href="category-skills.html">Category & Skills</a>
+
+    <a href="admin-complaints.html">Complaints</a>
+
+    <a href="#" onclick="logout()">Logout</a>
+
+</div>
+```
+
+</div>
+
+<!-- ================= ADMIN DASHBOARD ================= -->
+
+<div class="container">
+
+```
+<h1>Admin Dashboard</h1>
+
+<p class="page-description">
+
+    Manage HunarHub users, entrepreneurs, products,
+    orders and service requests.
+
+</p>
+
+
+<!-- ================= STATISTICS ================= -->
+
+<div class="admin-stats">
+
+    <div class="stat-card">
+
+        <h2 id="totalUsers">0</h2>
+
+        <p>Total Users</p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalEntrepreneurs">0</h2>
+
+        <p>Entrepreneurs</p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="pendingEntrepreneurs">0</h2>
+
+        <p>Pending Approval</p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalProducts">0</h2>
+
+        <p>Total Products</p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalOrders">0</h2>
+
+        <p>Total Orders</p>
+
+    </div>
+
+
+    <div class="stat-card">
+
+        <h2 id="totalRequests">0</h2>
+
+        <p>Service Requests</p>
 
     </div>
 
 </div>
 
 
-<!-- ================= ADMIN DASHBOARD ================= -->
+<!-- ================= ENTREPRENEUR APPROVAL ================= -->
 
-<div class="container">
+<section class="admin-section">
 
-    <h1>Admin Dashboard</h1>
+    <h2>
+        Entrepreneur Approval
+    </h2>
 
-    <p class="page-description">
-        Manage HunarHub users, entrepreneurs, products,
-        orders and service requests.
+    <p>
+        Review and verify local entrepreneurs.
     </p>
 
 
-    <!-- ================= STATISTICS ================= -->
+    <div id="entrepreneurList">
 
-    <div class="admin-stats">
-
-        <div class="stat-card">
-
-            <h2 id="totalUsers">0</h2>
-
-            <p>Total Users</p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h2 id="totalEntrepreneurs">0</h2>
-
-            <p>Entrepreneurs</p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h2 id="pendingEntrepreneurs">0</h2>
-
-            <p>Pending Approval</p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h2 id="totalProducts">0</h2>
-
-            <p>Total Products</p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h2 id="totalOrders">0</h2>
-
-            <p>Total Orders</p>
-
-        </div>
-
-
-        <div class="stat-card">
-
-            <h2 id="totalRequests">0</h2>
-
-            <p>Service Requests</p>
-
-        </div>
+        Loading entrepreneurs...
 
     </div>
 
-
-    <!-- ================= ENTREPRENEUR APPROVAL ================= -->
-
-    <section class="admin-section">
-
-        <h2>
-            Entrepreneur Approval
-        </h2>
-
-        <p>
-            Review and verify local entrepreneurs.
-        </p>
+</section>
 
 
-        <div id="entrepreneurList">
+<!-- ================= ORDERS ================= -->
 
-            Loading entrepreneurs...
+<section class="admin-section">
 
-        </div>
+    <h2>
+        Recent Orders
+    </h2>
 
-    </section>
+    <div id="orderList">
 
+        Loading orders...
 
-    <!-- ================= ORDERS ================= -->
+    </div>
 
-    <section class="admin-section">
-
-        <h2>
-            Recent Orders
-        </h2>
-
-        <div id="orderList">
-
-            Loading orders...
-
-        </div>
-
-    </section>
+</section>
 
 
-    <!-- ================= SERVICE REQUESTS ================= -->
+<!-- ================= SERVICE REQUESTS ================= -->
 
-    <section class="admin-section">
+<section class="admin-section">
 
-        <h2>
-            Service Requests
-        </h2>
+    <h2>
+        Service Requests
+    </h2>
 
-        <div id="requestList">
+    <div id="requestList">
 
-            Loading service requests...
+        Loading service requests...
 
-        </div>
+    </div>
 
-    </section>
+</section>
 
 
-    <!-- ================= USERS ================= -->
+<!-- ================= USERS ================= -->
 
-    <section class="admin-section">
+<section class="admin-section">
 
-        <h2>
-            Registered Users
-        </h2>
+    <h2>
+        Registered Users
+    </h2>
 
-        <div id="userList">
+    <div id="userList">
 
-            Loading users...
+        Loading users...
 
-        </div>
+    </div>
 
-    </section>
-    <!-- ================= CATEGORY & SKILL MANAGEMENT ================= -->
+</section>
+
+
+<!-- ================= CATEGORY & SKILL MANAGEMENT ================= -->
 
 <section class="admin-section">
 
@@ -222,12 +237,15 @@
     </div>
 
 </section>
+```
 
 </div>
 
+<!-- ================= ADMIN JAVASCRIPT ================= -->
 
 <script src="js/admin.js"></script>
 
+<!-- ================= LOGOUT ================= -->
 
 <script>
 
@@ -242,7 +260,6 @@ function logout() {
 }
 
 </script>
-
 
 </body>
 
