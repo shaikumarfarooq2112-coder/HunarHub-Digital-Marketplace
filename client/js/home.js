@@ -4,7 +4,7 @@ try{
 
 
 const response = await fetch(
-   "https://hunarhub-backend-p67s.onrender.com"
+   "hunarhub-backend-i8s7.onrender.com"
 );
 
 
