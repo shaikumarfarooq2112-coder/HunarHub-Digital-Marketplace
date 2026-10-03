@@ -17,7 +17,7 @@ async function registerUser() {
 
 
         const response = await fetch(
-            "https://https://hunarhub-backend-i8s7.onrender.com/api/users/register",
+            "https://hunarhub-backend-i8s7.onrender.com/api/users/register",
             {
 
                 method: "POST",
