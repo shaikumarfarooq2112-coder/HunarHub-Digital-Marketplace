@@ -18,7 +18,7 @@ try{
 
 const response=await fetch(
 
-"https://https://hunarhub-backend-i8s7.onrender.com/api/users/profile",
+"https://hunarhub-backend-i8s7.onrender.com/api/users/profile",
 
 {
 

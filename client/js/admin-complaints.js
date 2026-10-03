@@ -86,7 +86,7 @@ async function loadComplaints() {
 
         const response =
             await fetch(
-                "https://https://hunarhub-backend-i8s7.onrender.com/api/complaints",
+                "https://hunarhub-backend-i8s7.onrender.com/api/complaints",
                 {
 
                     method: "GET",
@@ -354,7 +354,7 @@ async function updateComplaint(id) {
 
         const response =
             await fetch(
-                `https://https://hunarhub-backend-i8s7.onrender.com/api/complaints/update/${id}`,
+                `https://hunarhub-backend-i8s7.onrender.com/api/complaints/update/${id}`,
                 {
 
                     method: "PUT",

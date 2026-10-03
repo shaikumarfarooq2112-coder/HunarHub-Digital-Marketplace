@@ -57,7 +57,7 @@ async function getServiceRequests() {
     try {
 
         const response = await fetch(
-            "https://https://hunarhub-backend-i8s7.onrender.com/api/service-requests/entrepreneur",
+            "https://hunarhub-backend-i8s7.onrender.com/api/service-requests/entrepreneur",
             {
 
                 method: "GET",
@@ -203,7 +203,7 @@ async function updateStatus(
 
         const response =
             await fetch(
-                `https://https://hunarhub-backend-i8s7.onrender.com/api/service-requests/update/${id}`,
+                `https://hunarhub-backend-i8s7.onrender.com/api/service-requests/update/${id}`,
                 {
 
                     method: "PUT",
@@ -260,7 +260,7 @@ async function getEntrepreneurOrders() {
 
         const response =
             await fetch(
-                "https://https://hunarhub-backend-i8s7.onrender.com/api/orders/entrepreneur",
+                "https://hunarhub-backend-i8s7.onrender.com/api/orders/entrepreneur",
                 {
 
                     method: "GET",
@@ -420,7 +420,7 @@ async function updateOrderStatus(
 
         const response =
             await fetch(
-                `https://https://hunarhub-backend-i8s7.onrender.com/api/orders/update/${id}`,
+                `https://hunarhub-backend-i8s7.onrender.com/api/orders/update/${id}`,
                 {
 
                     method: "PUT",
@@ -486,7 +486,7 @@ async function loadEarnings() {
 
         const response =
             await fetch(
-                "https://https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/earnings",
+                "https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/earnings",
                 {
 
                     method: "GET",

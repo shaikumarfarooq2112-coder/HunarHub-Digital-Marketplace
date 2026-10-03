@@ -19,7 +19,7 @@ async function getEntrepreneurProfile(){
 
         const response = await fetch(
 
-            `https://https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/${entrepreneurId}`
+            `https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/${entrepreneurId}`
 
         );
 

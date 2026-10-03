@@ -10,7 +10,7 @@ async function getProducts() {
     try {
 
         const response = await fetch(
-            "https://https://hunarhub-backend-i8s7.onrender.com/api/products"
+            "https://hunarhub-backend-i8s7.onrender.com/api/products"
         );
 
 
