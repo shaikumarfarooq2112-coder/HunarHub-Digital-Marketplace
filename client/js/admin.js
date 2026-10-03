@@ -37,7 +37,7 @@ async function loadStats() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/admin/stats",
+            "https://hunarhub-backend-2788.onrender.com/api/admin/stats",
             {
                 method: "GET",
                 headers: headers
@@ -117,7 +117,7 @@ async function loadEntrepreneurs() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs",
+            "https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs",
             {
                 method: "GET",
                 headers: headers
@@ -310,7 +310,7 @@ async function approveEntrepreneur(id) {
 
         const response = await fetch(
 
-            `http://https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs/${id}/approve`,
+            `https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs/${id}/approve`,
 
             {
 
@@ -375,7 +375,7 @@ async function rejectEntrepreneur(id) {
 
         const response = await fetch(
 
-            `http://https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs/${id}/reject`,
+            `https://hunarhub-backend-2788.onrender.com/api/admin/entrepreneurs/${id}/reject`,
 
             {
 
@@ -426,7 +426,7 @@ async function loadOrders() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/admin/orders",
+            "https://hunarhub-backend-2788.onrender.com/api/admin/orders",
             {
                 method: "GET",
                 headers: headers
@@ -529,7 +529,7 @@ async function loadServiceRequests() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/admin/service-requests",
+            "https://hunarhub-backend-2788.onrender.com/api/admin/service-requests",
             {
                 method: "GET",
                 headers: headers
@@ -650,7 +650,7 @@ async function loadUsers() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/admin/users",
+            "https://hunarhub-backend-2788.onrender.com/api/admin/users",
             {
                 method: "GET",
                 headers: headers

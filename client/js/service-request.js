@@ -18,7 +18,7 @@ async function loadEntrepreneurs() {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/entrepreneurs"
+            "https://hunarhub-backend-2788.onrender.com/api/entrepreneurs"
         );
 
         const data = await response.json();
@@ -136,7 +136,7 @@ form.addEventListener(
 
             const response =
                 await fetch(
-                    "http://https://hunarhub-backend-2788.onrender.com/api/service-requests/create",
+                    "https://hunarhub-backend-2788.onrender.com/api/service-requests/create",
                     {
 
                         method: "POST",

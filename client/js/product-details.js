@@ -22,7 +22,7 @@ async function getProductDetails(){
     try {
         const response = await fetch(
 
-            `http://https://hunarhub-backend-2788.onrender.com/api/products/${productId}`
+            `https://hunarhub-backend-2788.onrender.com/api/products/${productId}`
 
         );
 
@@ -110,7 +110,7 @@ async function buyProduct(){
 
         const response = await fetch(
 
-            "http://https://hunarhub-backend-2788.onrender.com/api/orders/create",
+            "https://hunarhub-backend-2788.onrender.com/api/orders/create",
 
             {
 
@@ -197,7 +197,7 @@ async function getReviews(){
 
         const response = await fetch(
 
-            `http://https://hunarhub-backend-2788.onrender.com/api/reviews/product/${productId}`
+            `https://hunarhub-backend-2788.onrender.com/api/reviews/product/${productId}`
 
         );
 
@@ -331,7 +331,7 @@ async function addReview(){
 
         const response = await fetch(
 
-            "http://https://hunarhub-backend-2788.onrender.com/api/reviews/create",
+            "https://hunarhub-backend-2788.onrender.com/api/reviews/create",
 
             {
 

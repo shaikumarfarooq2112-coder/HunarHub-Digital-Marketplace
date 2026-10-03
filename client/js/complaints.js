@@ -67,7 +67,7 @@ if (complaintForm) {
 
                 const response =
                     await fetch(
-                        "http://https://hunarhub-backend-2788.onrender.com/api/complaints/create",
+                        "https://hunarhub-backend-2788.onrender.com/api/complaints/create",
                         {
 
                             method: "POST",
@@ -175,7 +175,7 @@ async function loadComplaints() {
 
         const response =
             await fetch(
-                "http://https://hunarhub-backend-2788.onrender.com/api/complaints/customer",
+                "https://hunarhub-backend-2788.onrender.com/api/complaints/customer",
                 {
 
                     method: "GET",

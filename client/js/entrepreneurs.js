@@ -8,7 +8,7 @@ async function getEntrepreneurs() {
 
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/entrepreneurs"
+            "https://hunarhub-backend-2788.onrender.com/api/entrepreneurs"
         );
 
 

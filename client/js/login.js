@@ -18,7 +18,7 @@ loginForm.addEventListener("submit", async function (event) {
     try {
 
         const response = await fetch(
-            "http://https://hunarhub-backend-2788.onrender.com/api/users/login",
+            "https://hunarhub-backend-2788.onrender.com/api/users/login",
             {
                 method: "POST",
 
