@@ -1,690 +1,386 @@
-// =====================================================
-// CHECK LOGIN TOKEN
-// =====================================================
+
+/* =====================================================
+   CHECK LOGIN TOKEN AND USER ROLE
+===================================================== */
 
 const token = localStorage.getItem("token");
-
-if (!token) {
-
-    alert("Please login first");
-
-    window.location.href = "login.html";
-
-}
-
-
-// =====================================================
-// LOGOUT
-// =====================================================
-
-function logout() {
-
-    localStorage.removeItem("token");
-
-    alert("Logout successful");
-
-    window.location.href = "login.html";
-
-}
-
-
-// =====================================================
-// GET USER ROLE
-// =====================================================
-
 let user = null;
 
-try {
-
-    user = JSON.parse(
-        atob(token.split(".")[1])
-    );
-
-}
-catch (error) {
-
-    console.log("Invalid token");
-
+function logout() {
+    localStorage.removeItem("token");
+    window.location.href = "login.html";
 }
 
+function decodeToken(tokenValue) {
+    try {
+        const payload = tokenValue.split(".")[1];
+        const base64 = payload
+            .replace(/-/g, "+")
+            .replace(/_/g, "/");
 
-// =====================================================
-// GET ENTREPRENEUR SERVICE REQUESTS
-// =====================================================
+        return JSON.parse(
+            decodeURIComponent(
+                atob(base64)
+                    .split("")
+                    .map(char =>
+                        "%" + char.charCodeAt(0)
+                            .toString(16).padStart(2, "0")
+                    )
+                    .join("")
+            )
+        );
+    } catch (error) {
+        console.error("Unable to read login token:", error);
+        return null;
+    }
+}
+
+if (!token) {
+    alert("Please login first");
+    window.location.href = "login.html";
+} else {
+    user = decodeToken(token);
+
+    if (!user || !user.role) {
+        localStorage.removeItem("token");
+        alert("Your login session is invalid. Please log in again.");
+        window.location.href = "login.html";
+    }
+}
+
+/* =====================================================
+   SHOW NAVIGATION AND CONTENT BY ROLE
+===================================================== */
+
+function configureDashboard() {
+    if (!user) return;
+
+    const adminLink = document.getElementById("adminLink");
+    const categorySkillsLink =
+        document.getElementById("categorySkillsLink");
+    const addProductLink = document.getElementById("addProductLink");
+
+    const earningsSection =
+        document.getElementById("earningsSection");
+    const serviceSection =
+        document.getElementById("serviceRequestsSection");
+    const ordersSection =
+        document.getElementById("ordersSection");
+
+    if (adminLink) {
+        adminLink.hidden = user.role !== "admin";
+    }
+
+    if (categorySkillsLink) {
+        categorySkillsLink.hidden = user.role !== "admin";
+    }
+
+    if (addProductLink) {
+        addProductLink.hidden = user.role !== "entrepreneur";
+    }
+
+    // Only entrepreneurs see entrepreneur earnings and management sections.
+    if (user.role !== "entrepreneur") {
+        if (earningsSection) earningsSection.hidden = true;
+        if (serviceSection) serviceSection.hidden = true;
+        if (ordersSection) ordersSection.hidden = true;
+    }
+
+    const heading = document.querySelector(".container h1");
+    const description = document.querySelector(".container > p");
+
+    if (heading) {
+        if (user.role === "admin") {
+            heading.textContent = "Welcome to HunarHub Admin Dashboard";
+        } else if (user.role === "entrepreneur") {
+            heading.textContent = "Welcome to HunarHub Entrepreneur Dashboard";
+        } else {
+            heading.textContent = "Welcome to HunarHub Customer Dashboard";
+        }
+    }
+
+    if (description) {
+        if (user.role === "admin") {
+            description.textContent =
+                "Manage entrepreneurs, categories, skills and complaints.";
+        } else if (user.role === "entrepreneur") {
+            description.textContent =
+                "Manage your products, orders, earnings and service requests.";
+        } else {
+            description.textContent =
+                "Explore products, manage orders and request services.";
+        }
+    }
+}
+
+/* =====================================================
+   GET ENTREPRENEUR SERVICE REQUESTS
+===================================================== */
 
 async function getServiceRequests() {
-
     try {
-
         const response = await fetch(
             "https://hunarhub-backend-i8s7.onrender.com/api/service-requests/entrepreneur",
             {
-
-                method: "GET",
-
                 headers: {
-
-                    "Authorization":
-                        "Bearer " + token
-
+                    Authorization: "Bearer " + token
                 }
-
             }
         );
 
+        const data = await response.json();
+        const requestList = document.getElementById("requestList");
 
-        const data =
-            await response.json();
+        if (!requestList) return;
 
-
-        const requestList =
-            document.getElementById(
-                "requestList"
-            );
-
-
-        if (!requestList) {
-
+        if (!response.ok) {
+            requestList.textContent =
+                data.message || "Unable to load service requests.";
             return;
-
         }
-
 
         requestList.innerHTML = "";
 
-
-        if (
-            !data.requests ||
-            data.requests.length === 0
-        ) {
-
-            requestList.innerHTML =
-                "<p>No service requests found.</p>";
-
+        if (!data.requests || data.requests.length === 0) {
+            requestList.textContent = "No service requests found.";
             return;
-
         }
 
+        data.requests.forEach(request => {
+            const card = document.createElement("div");
+            card.className = "product-card";
 
-        data.requests.forEach(
-            request => {
+            const title = document.createElement("h3");
+            title.textContent = request.service || "Service request";
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
+            const customer = document.createElement("p");
+            customer.textContent =
+                "Customer: " + (request.customer?.name || "Unknown");
 
+            const description = document.createElement("p");
+            description.textContent =
+                "Description: " + (request.description || "Not provided");
 
-                card.className =
-                    "product-card";
+            const date = document.createElement("p");
+            date.textContent = "Date: " +
+                (request.date
+                    ? new Date(request.date).toLocaleDateString()
+                    : "Not specified");
 
+            const status = document.createElement("p");
+            status.textContent = "Status: " + (request.status || "Pending");
 
-                card.innerHTML = `
+            card.append(title, customer, description, date, status);
 
-                    <h3>
-                        ${request.service}
-                    </h3>
-
-                    <p>
-                        <strong>Customer:</strong>
-                        ${request.customer?.name || "Unknown"}
-                    </p>
-
-                    <p>
-                        <strong>Description:</strong>
-                        ${request.description}
-                    </p>
-
-                    <p>
-                        <strong>Date:</strong>
-                        ${new Date(
-                            request.date
-                        ).toLocaleDateString()}
-                    </p>
-
-                    <p>
-                        <strong>Status:</strong>
-                        ${request.status}
-                    </p>
-
-
-                    <button
-                        onclick="updateStatus(
-                            '${request._id}',
-                            'Accepted'
-                        )"
-                    >
-                        Accept
-                    </button>
-
-
-                    <button
-                        onclick="updateStatus(
-                            '${request._id}',
-                            'Rejected'
-                        )"
-                    >
-                        Reject
-                    </button>
-
-                `;
-
-
-                requestList.appendChild(
-                    card
+            ["Accepted", "Rejected"].forEach(newStatus => {
+                const button = document.createElement("button");
+                button.textContent = newStatus;
+                button.addEventListener("click", () =>
+                    updateStatus(request._id, newStatus)
                 );
+                card.appendChild(button);
+            });
 
+            requestList.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Service request error:", error);
+        const list = document.getElementById("requestList");
+        if (list) list.textContent = "Unable to load service requests.";
+    }
+}
+
+/* =====================================================
+   UPDATE SERVICE REQUEST STATUS
+===================================================== */
+
+async function updateStatus(id, status) {
+    try {
+        const response = await fetch(
+            `https://hunarhub-backend-i8s7.onrender.com/api/service-requests/update/${id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({ status })
             }
         );
 
+        const data = await response.json();
+        alert(data.message || (response.ok ? "Request updated." : "Update failed."));
+
+        if (response.ok) await getServiceRequests();
+    } catch (error) {
+        console.error("Update service request error:", error);
+        alert("Unable to update the service request.");
     }
-    catch (error) {
-
-        console.log(
-            "Service request error:",
-            error
-        );
-
-    }
-
 }
 
-
-// =====================================================
-// UPDATE SERVICE REQUEST STATUS
-// =====================================================
-
-async function updateStatus(
-    id,
-    status
-) {
-
-    try {
-
-        const response =
-            await fetch(
-                `https://hunarhub-backend-i8s7.onrender.com/api/service-requests/update/${id}`,
-                {
-
-                    method: "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    },
-
-                    body: JSON.stringify({
-
-                        status: status
-
-                    })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        alert(data.message);
-
-
-        getServiceRequests();
-
-    }
-    catch (error) {
-
-        console.log(
-            "Update service request error:",
-            error
-        );
-
-    }
-
-}
-
-
-// =====================================================
-// GET ENTREPRENEUR ORDERS
-// =====================================================
+/* =====================================================
+   GET ENTREPRENEUR ORDERS
+===================================================== */
 
 async function getEntrepreneurOrders() {
-
     try {
-
-        const response =
-            await fetch(
-                "https://hunarhub-backend-i8s7.onrender.com/api/orders/entrepreneur",
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    }
-
+        const response = await fetch(
+            "https://hunarhub-backend-i8s7.onrender.com/api/orders/entrepreneur",
+            {
+                headers: {
+                    Authorization: "Bearer " + token
                 }
-            );
+            }
+        );
 
+        const data = await response.json();
+        const ordersList = document.getElementById("recentOrders");
 
-        const data =
-            await response.json();
+        if (!ordersList) return;
 
-
-        const ordersList =
-            document.getElementById(
-                "recentOrders"
-            );
-
-
-        if (!ordersList) {
-
+        if (!response.ok) {
+            ordersList.textContent =
+                data.message || "Unable to load orders.";
             return;
-
         }
-
 
         ordersList.innerHTML = "";
 
-
-        if (
-            !data.orders ||
-            data.orders.length === 0
-        ) {
-
-            ordersList.innerHTML =
-                "<p>No orders found.</p>";
-
+        if (!data.orders || data.orders.length === 0) {
+            ordersList.textContent = "No orders found.";
             return;
-
         }
 
+        data.orders.slice(0, 5).forEach(order => {
+            const card = document.createElement("div");
+            card.className = "product-card";
 
-        data.orders
-            .slice(0, 5)
-            .forEach(order => {
+            const title = document.createElement("h3");
+            title.textContent = order.product?.name || "Product";
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
+            const customer = document.createElement("p");
+            customer.textContent =
+                "Customer: " + (order.customer?.name || "Unknown");
 
+            const quantity = document.createElement("p");
+            quantity.textContent = "Quantity: " + (order.quantity ?? 0);
 
-                card.className =
-                    "product-card";
+            const price = document.createElement("p");
+            price.textContent = "Total Price: ₹" + (order.totalPrice ?? 0);
 
+            const status = document.createElement("p");
+            status.textContent = "Status: " + (order.status || "Pending");
 
-                card.innerHTML = `
+            card.append(title, customer, quantity, price, status);
 
-                    <h3>
-                        ${order.product?.name ||
-                        "Product"}
-                    </h3>
-
-
-                    <p>
-                        <strong>Customer:</strong>
-                        ${order.customer?.name ||
-                        "Unknown"}
-                    </p>
-
-
-                    <p>
-                        <strong>Quantity:</strong>
-                        ${order.quantity}
-                    </p>
-
-
-                    <p>
-                        <strong>Total Price:</strong>
-                        ₹${order.totalPrice}
-                    </p>
-
-
-                    <p>
-                        <strong>Status:</strong>
-                        ${order.status}
-                    </p>
-
-
-                    <button
-                        onclick="updateOrderStatus(
-                            '${order._id}',
-                            'Confirmed'
-                        )"
-                    >
-                        Confirm
-                    </button>
-
-
-                    <button
-                        onclick="updateOrderStatus(
-                            '${order._id}',
-                            'Completed'
-                        )"
-                    >
-                        Complete
-                    </button>
-
-
-                    <button
-                        onclick="updateOrderStatus(
-                            '${order._id}',
-                            'Cancelled'
-                        )"
-                    >
-                        Cancel
-                    </button>
-
-                `;
-
-
-                ordersList.appendChild(
-                    card
+            [
+                ["Confirm", "Confirmed"],
+                ["Complete", "Completed"],
+                ["Cancel", "Cancelled"]
+            ].forEach(([label, statusValue]) => {
+                const button = document.createElement("button");
+                button.textContent = label;
+                button.addEventListener("click", () =>
+                    updateOrderStatus(order._id, statusValue)
                 );
-
+                card.appendChild(button);
             });
 
+            ordersList.appendChild(card);
+        });
+    } catch (error) {
+        console.error("Entrepreneur orders error:", error);
+        const list = document.getElementById("recentOrders");
+        if (list) list.textContent = "Unable to load orders.";
     }
-    catch (error) {
-
-        console.log(
-            "Entrepreneur orders error:",
-            error
-        );
-
-    }
-
 }
 
+/* =====================================================
+   UPDATE ORDER STATUS
+===================================================== */
 
-// =====================================================
-// UPDATE ORDER STATUS
-// =====================================================
-
-async function updateOrderStatus(
-    id,
-    status
-) {
-
+async function updateOrderStatus(id, status) {
     try {
-
-        const response =
-            await fetch(
-                `https://hunarhub-backend-i8s7.onrender.com/api/orders/update/${id}`,
-                {
-
-                    method: "PUT",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    },
-
-                    body: JSON.stringify({
-
-                        status: status
-
-                    })
-
-                }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        alert(data.message);
-
-
-        getEntrepreneurOrders();
-
-        loadEarnings();
-
-    }
-    catch (error) {
-
-        console.log(
-            "Update order error:",
-            error
+        const response = await fetch(
+            `https://hunarhub-backend-i8s7.onrender.com/api/orders/update/${id}`,
+            {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                    Authorization: "Bearer " + token
+                },
+                body: JSON.stringify({ status })
+            }
         );
 
-    }
+        const data = await response.json();
+        alert(data.message || (response.ok ? "Order updated." : "Update failed."));
 
+        if (response.ok) {
+            await getEntrepreneurOrders();
+            await loadEarnings();
+        }
+    } catch (error) {
+        console.error("Update order error:", error);
+        alert("Unable to update the order.");
+    }
 }
 
-
-// =====================================================
-// LOAD ENTREPRENEUR EARNINGS
-// =====================================================
+/* =====================================================
+   LOAD ENTREPRENEUR EARNINGS
+===================================================== */
 
 async function loadEarnings() {
-
-    if (!token) {
-
-        return;
-
-    }
-
-
     try {
-
-        const response =
-            await fetch(
-                "https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/earnings",
-                {
-
-                    method: "GET",
-
-                    headers: {
-
-                        "Authorization":
-                            "Bearer " + token
-
-                    }
-
+        const response = await fetch(
+            "https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/earnings",
+            {
+                headers: {
+                    Authorization: "Bearer " + token
                 }
-            );
-
-
-        const data =
-            await response.json();
-
-
-        console.log(
-            "Earnings:",
-            data
+            }
         );
 
+        const data = await response.json();
 
         if (!response.ok) {
-
-            console.log(
-                data.message
-            );
-
+            console.error("Earnings error:", data.message);
             return;
-
         }
 
+        const values = {
+            totalEarnings: "₹" + (data.totalEarnings ?? 0),
+            totalSales: "₹" + (data.totalSales ?? 0),
+            completedOrders: data.completedOrders ?? 0,
+            pendingOrders: data.pendingOrders ?? 0,
+            confirmedOrders: data.confirmedOrders ?? 0
+        };
 
-        const totalEarnings =
-            document.getElementById(
-                "totalEarnings"
-            );
-
-
-        const totalSales =
-            document.getElementById(
-                "totalSales"
-            );
-
-
-        const completedOrders =
-            document.getElementById(
-                "completedOrders"
-            );
-
-
-        const pendingOrders =
-            document.getElementById(
-                "pendingOrders"
-            );
-
-
-        const confirmedOrders =
-            document.getElementById(
-                "confirmedOrders"
-            );
-
-
-        if (totalEarnings) {
-
-            totalEarnings.textContent =
-                "₹" +
-                data.totalEarnings;
-
-        }
-
-
-        if (totalSales) {
-
-            totalSales.textContent =
-                "₹" +
-                data.totalSales;
-
-        }
-
-
-        if (completedOrders) {
-
-            completedOrders.textContent =
-                data.completedOrders;
-
-        }
-
-
-        if (pendingOrders) {
-
-            pendingOrders.textContent =
-                data.pendingOrders;
-
-        }
-
-
-        if (confirmedOrders) {
-
-            confirmedOrders.textContent =
-                data.confirmedOrders;
-
-        }
-
+        Object.entries(values).forEach(([id, value]) => {
+            const element = document.getElementById(id);
+            if (element) element.textContent = value;
+        });
+    } catch (error) {
+        console.error("Earnings error:", error);
     }
-    catch (error) {
-
-        console.log(
-            "Earnings error:",
-            error
-        );
-
-    }
-
 }
 
+/* =====================================================
+   START DASHBOARD
+===================================================== */
 
-// =====================================================
-// LOAD DASHBOARD
-// =====================================================
+async function loadDashboard() {
+    if (!user) return;
 
-function loadDashboard() {
+    configureDashboard();
 
-    if (!user) {
-
-        return;
-
+    if (user.role === "entrepreneur") {
+        await Promise.all([
+            getServiceRequests(),
+            getEntrepreneurOrders(),
+            loadEarnings()
+        ]);
     }
-
-
-    // ENTREPRENEUR DASHBOARD
-
-    if (
-        user.role === "entrepreneur"
-    ) {
-
-        getServiceRequests();
-
-        getEntrepreneurOrders();
-
-        loadEarnings();
-
-    }
-
-
-    // CUSTOMER DASHBOARD
-
-    else {
-
-        const serviceSection =
-            document.getElementById(
-                "serviceRequestsSection"
-            );
-
-
-        if (serviceSection) {
-
-            serviceSection.style.display =
-                "none";
-
-        }
-
-
-        const ordersSection =
-            document.getElementById(
-                "ordersSection"
-            );
-
-
-        if (ordersSection) {
-
-            ordersSection.style.display =
-                "none";
-
-        }
-
-    }
-
 }
-
-
-// =====================================================
-// GO TO ORDERS
-// =====================================================
-
-function goOrders() {
-
-    window.location.href =
-        "orders.html";
-
-}
-
-
-// =====================================================
-// START DASHBOARD
-// =====================================================
 
 loadDashboard();

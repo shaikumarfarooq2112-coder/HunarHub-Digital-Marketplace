@@ -21,39 +21,27 @@
 <!-- ================= NAVBAR ================= -->
 
 <div class="navbar">
-
     <h2>HunarHub</h2>
 
     <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="products.html">Products</a>
+        <a href="entrepreneurs.html">Entrepreneurs</a>
 
-        <a href="dashboard.html">
-            Dashboard
-        </a>
+        <!-- Entrepreneur-only link -->
+        <a href="add-product.html" id="addProductLink" hidden>Add Product</a>
 
-        <a href="products.html">
-            Products
-        </a>
+        <!-- Admin-only links -->
+        <a href="admin.html" id="adminLink" hidden>Admin</a>
+        <a href="category-skills.html" id="categorySkillsLink" hidden>Category & Skills</a>
 
-        <a href="service-request.html">
-            Request Service
-        </a>
-
-        <a href="orders.html">
-            Orders
-        </a>
-
-        <a href="profile.html">
-            Profile
-        </a>
-
+        <a href="service-request.html">Request Service</a>
+        <a href="orders.html">Orders</a>
+        <a href="profile.html">Profile</a>
         <a href="complaints.html">Complaints</a>
 
-        <a href="#" onclick="logout()">
-            Logout
-        </a>
-
+        <a href="#" onclick="logout(); return false;">Logout</a>
     </div>
-
 </div>
 
 
