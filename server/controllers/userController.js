@@ -94,9 +94,14 @@ const loginUser = async (req, res) => {
         } = req.body;
 
 
-        const user = await User.findOne({
-            email
-        });
+        const normalizedEmail = email.trim().toLowerCase();
+
+const user = await User.findOne({
+    email: normalizedEmail
+});
+
+console.log("Login email received:", normalizedEmail);
+console.log("User found:", !!user);
 
 
         if (!user) {
