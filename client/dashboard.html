@@ -1,229 +1,155 @@
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
-
-    <meta name="viewport"
-          content="width=device-width, initial-scale=1.0">
-
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HunarHub Dashboard</title>
-
     <link rel="stylesheet" href="css/style.css">
-
 </head>
-
 
 <body>
 
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>HunarHub</h2>
 
-<!-- ================= NAVBAR ================= -->
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="entrepreneurs.html">Entrepreneurs</a>
 
-<div class="navbar">
-    <h2>HunarHub</h2>
+            <!-- Admin-only links -->
+            <a href="admin.html" id="adminLink" hidden>Admin</a>
+            <a href="category-skills.html" id="categorySkillsLink" hidden>
+                Category &amp; Skills
+            </a>
 
-    <div class="nav-links">
-        <a href="index.html">Home</a>
-        <a href="dashboard.html">Dashboard</a>
-        <a href="products.html">Products</a>
-        <a href="entrepreneurs.html">Entrepreneurs</a>
+            <!-- Entrepreneur-only link -->
+            <a href="add-product.html" id="addProductLink" hidden>
+                Add Product
+            </a>
 
-        <!-- Entrepreneur-only link -->
-        <a href="add-product.html" id="addProductLink" hidden>
-            Add Product
-        </a>
+            <!-- Customer and entrepreneur links -->
+            <a href="service-request.html" id="requestServiceLink" hidden>
+                Request Service
+            </a>
+            <a href="orders.html" id="ordersLink" hidden>Orders</a>
+            <a href="profile.html" id="profileLink" hidden>Profile</a>
 
-        <a href="service-request.html">Request Service</a>
-        <a href="orders.html">Orders</a>
-        <a href="profile.html">Profile</a>
-        <a href="complaints.html">Complaints</a>
+            <!-- Available to all logged-in roles -->
+            <a href="complaints.html" id="complaintsLink" hidden>
+                Complaints
+            </a>
 
-        <a href="#" onclick="logout(); return false;">Logout</a>
+            <a href="#" id="logoutLink">Logout</a>
+        </div>
     </div>
-</div>
 
+    <!-- DASHBOARD CONTENT -->
+    <main class="container">
 
-<!-- ================= DASHBOARD ================= -->
+        <h1 id="dashboardHeading">Welcome to HunarHub Dashboard</h1>
 
-<div class="container">
+        <p id="dashboardDescription">
+            Manage your products, orders and activities here.
+        </p>
 
+        <!-- ADMIN SHORTCUTS -->
+        <section id="adminQuickLinks" hidden>
+            <h2>Admin Management</h2>
 
-    <h1>
-        Welcome to HunarHub Dashboard
-    </h1>
+            <div class="earnings-grid">
 
+                <div class="earnings-card">
+                    <h3>Entrepreneurs</h3>
+                    <p>View entrepreneur profiles.</p>
+                    <a href="entrepreneurs.html">View Entrepreneurs</a>
+                </div>
 
-    <p>
-        Manage your products, orders and activities here.
-    </p>
+                <div class="earnings-card">
+                    <h3>Categories &amp; Skills</h3>
+                    <p>Manage marketplace categories and skills.</p>
+                    <a href="category-skills.html">Manage Categories &amp; Skills</a>
+                </div>
 
+                <div class="earnings-card">
+                    <h3>Complaints</h3>
+                    <p>Review submitted complaints.</p>
+                    <a href="complaints.html">Manage Complaints</a>
+                </div>
 
-    <hr>
-
-
-    <!-- ================= EARNINGS OVERVIEW ================= -->
-
-    <section class="earnings-section" id="earningsSection">
-
-        <h2>
-            💰 Earnings Overview
-        </h2>
-
-
-        <div class="earnings-grid">
-
-
-            <!-- TOTAL EARNINGS -->
-
-            <div class="earnings-card">
-
-                <h3 id="totalEarnings">
-                    ₹0
-                </h3>
-
-                <p>
-                    Total Earnings
-                </p>
+                <div class="earnings-card">
+                    <h3>Admin Panel</h3>
+                    <p>Open the administration page.</p>
+                    <a href="admin.html">Open Admin</a>
+                </div>
 
             </div>
+        </section>
 
+        <!-- ENTREPRENEUR-ONLY DASHBOARD SECTIONS -->
+        <div id="entrepreneurDashboardSections" hidden>
 
-            <!-- TOTAL SALES -->
+            <hr>
 
-            <div class="earnings-card">
+            <!-- EARNINGS OVERVIEW -->
+            <section class="earnings-section" id="earningsSection">
+                <h2>Earnings Overview</h2>
 
-                <h3 id="totalSales">
-                    ₹0
-                </h3>
+                <div class="earnings-grid">
 
-                <p>
-                    Total Sales
-                </p>
+                    <div class="earnings-card">
+                        <h3 id="totalEarnings">₹0</h3>
+                        <p>Total Earnings</p>
+                    </div>
 
-            </div>
+                    <div class="earnings-card">
+                        <h3 id="totalSales">₹0</h3>
+                        <p>Total Sales</p>
+                    </div>
 
+                    <div class="earnings-card">
+                        <h3 id="completedOrders">0</h3>
+                        <p>Completed Orders</p>
+                    </div>
 
-            <!-- COMPLETED ORDERS -->
+                    <div class="earnings-card">
+                        <h3 id="pendingOrders">0</h3>
+                        <p>Pending Orders</p>
+                    </div>
 
-            <div class="earnings-card">
+                    <div class="earnings-card">
+                        <h3 id="confirmedOrders">0</h3>
+                        <p>Confirmed Orders</p>
+                    </div>
 
-                <h3 id="completedOrders">
-                    0
-                </h3>
+                </div>
+            </section>
 
-                <p>
-                    Completed Orders
-                </p>
+            <hr>
 
-            </div>
+            <!-- SERVICE REQUESTS -->
+            <section id="serviceRequestsSection">
+                <h2>Service Requests</h2>
+                <div id="requestList">Loading requests...</div>
+            </section>
 
+            <hr>
 
-            <!-- PENDING ORDERS -->
-
-            <div class="earnings-card">
-
-                <h3 id="pendingOrders">
-                    0
-                </h3>
-
-                <p>
-                    Pending Orders
-                </p>
-
-            </div>
-
-
-            <!-- CONFIRMED ORDERS -->
-
-            <div class="earnings-card">
-
-                <h3 id="confirmedOrders">
-                    0
-                </h3>
-
-                <p>
-                    Confirmed Orders
-                </p>
-
-            </div>
-
+            <!-- RECENT ORDERS -->
+            <section id="ordersSection">
+                <h2>Recent Orders</h2>
+                <div id="recentOrders">Loading orders...</div>
+            </section>
 
         </div>
 
-    </section>
+    </main>
 
-
-    <hr>
-
-
-    <!-- ================= SERVICE REQUESTS ================= -->
-
-    <div id="serviceRequestsSection">
-
-        <h2>
-            Service Requests
-        </h2>
-
-
-        <div id="requestList">
-
-            Loading requests...
-
-        </div>
-
-    </div>
-
-
-    <hr>
-
-
-    <!-- ================= RECENT ORDERS ================= -->
-
-    <div id="ordersSection">
-
-        <h2>
-            Recent Orders
-        </h2>
-
-
-        <div id="recentOrders">
-
-            Loading orders...
-
-        </div>
-
-    </div>
-
-
-</div>
-
-
-<!-- ================= JAVASCRIPT ================= -->
-
-<script src="js/dashboard.js"></script>
-
-
-<script>
-
-
-// ================= LOGOUT =================
-
-function logout() {
-
-    localStorage.removeItem("token");
-
-    alert("Logout successful");
-
-    window.location.href =
-        "login.html";
-
-}
-
-
-</script>
-
+    <!-- DASHBOARD JAVASCRIPT -->
+    <script src="js/dashboard.js"></script>
 
 </body>
-
 </html>

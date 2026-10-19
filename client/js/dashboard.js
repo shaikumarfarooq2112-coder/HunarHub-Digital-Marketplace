@@ -1,22 +1,51 @@
 
 /* =====================================================
-   CHECK LOGIN TOKEN AND USER ROLE
+   HUNARHUB DASHBOARD
+   Login validation, role-based navigation and data
 ===================================================== */
 
 const token = localStorage.getItem("token");
 let user = null;
+
+const API_BASE = "https://hunarhub-backend-i8s7.onrender.com";
+
+/* =====================================================
+   LOGOUT
+===================================================== */
 
 function logout() {
     localStorage.removeItem("token");
     window.location.href = "login.html";
 }
 
+const logoutLink = document.getElementById("logoutLink");
+
+if (logoutLink) {
+    logoutLink.addEventListener("click", function (event) {
+        event.preventDefault();
+        logout();
+    });
+}
+
+/* =====================================================
+   DECODE LOGIN TOKEN
+===================================================== */
+
 function decodeToken(tokenValue) {
     try {
         const payload = tokenValue.split(".")[1];
-        const base64 = payload
+
+        if (!payload) {
+            return null;
+        }
+
+        let base64 = payload
             .replace(/-/g, "+")
             .replace(/_/g, "/");
+
+        while (base64.length % 4 !== 0) {
+            base64 += "=";
+        }
 
         return JSON.parse(
             decodeURIComponent(
@@ -24,7 +53,8 @@ function decodeToken(tokenValue) {
                     .split("")
                     .map(char =>
                         "%" + char.charCodeAt(0)
-                            .toString(16).padStart(2, "0")
+                            .toString(16)
+                            .padStart(2, "0")
                     )
                     .join("")
             )
@@ -35,78 +65,133 @@ function decodeToken(tokenValue) {
     }
 }
 
+/* =====================================================
+   CHECK LOGIN
+===================================================== */
+
 if (!token) {
-    alert("Please login first");
-    window.location.href = "login.html";
+    alert("Please login first.");
+    window.location.replace("login.html");
 } else {
     user = decodeToken(token);
 
     if (!user || !user.role) {
         localStorage.removeItem("token");
         alert("Your login session is invalid. Please log in again.");
-        window.location.href = "login.html";
+        window.location.replace("login.html");
     }
 }
 
 /* =====================================================
-   SHOW NAVIGATION AND CONTENT BY ROLE
+   ROLE-BASED NAVIGATION AND DASHBOARD CONTENT
 ===================================================== */
 
 function configureDashboard() {
     if (!user) return;
 
-    const adminLink = document.getElementById("adminLink");
+    const isAdmin = user.role === "admin";
+    const isEntrepreneur = user.role === "entrepreneur";
+    const isCustomer = user.role === "customer";
+
+    const adminLink =
+        document.getElementById("adminLink");
+
     const categorySkillsLink =
         document.getElementById("categorySkillsLink");
-    const addProductLink = document.getElementById("addProductLink");
 
-    const earningsSection =
-        document.getElementById("earningsSection");
-    const serviceSection =
-        document.getElementById("serviceRequestsSection");
-    const ordersSection =
-        document.getElementById("ordersSection");
+    const addProductLink =
+        document.getElementById("addProductLink");
+
+    const requestServiceLink =
+        document.getElementById("requestServiceLink");
+
+    const ordersLink =
+        document.getElementById("ordersLink");
+
+    const profileLink =
+        document.getElementById("profileLink");
+
+    const complaintsLink =
+        document.getElementById("complaintsLink");
+
+    const adminQuickLinks =
+        document.getElementById("adminQuickLinks");
+
+    const entrepreneurDashboardSections =
+        document.getElementById("entrepreneurDashboardSections");
+
+    /* Navigation visibility */
 
     if (adminLink) {
-        adminLink.hidden = user.role !== "admin";
+        adminLink.hidden = !isAdmin;
     }
 
     if (categorySkillsLink) {
-        categorySkillsLink.hidden = user.role !== "admin";
+        categorySkillsLink.hidden = !isAdmin;
     }
 
     if (addProductLink) {
-        addProductLink.hidden = user.role !== "entrepreneur";
+        addProductLink.hidden = !isEntrepreneur;
     }
 
-    // Only entrepreneurs see entrepreneur earnings and management sections.
-    if (user.role !== "entrepreneur") {
-        if (earningsSection) earningsSection.hidden = true;
-        if (serviceSection) serviceSection.hidden = true;
-        if (ordersSection) ordersSection.hidden = true;
+    if (requestServiceLink) {
+        requestServiceLink.hidden = isAdmin;
     }
 
-    const heading = document.querySelector(".container h1");
-    const description = document.querySelector(".container > p");
+    if (ordersLink) {
+        ordersLink.hidden = isAdmin;
+    }
+
+    if (profileLink) {
+        profileLink.hidden = isAdmin;
+    }
+
+    if (complaintsLink) {
+        complaintsLink.hidden = false;
+    }
+
+    /* Dashboard section visibility */
+
+    if (adminQuickLinks) {
+        adminQuickLinks.hidden = !isAdmin;
+    }
+
+    if (entrepreneurDashboardSections) {
+        entrepreneurDashboardSections.hidden = !isEntrepreneur;
+    }
+
+    /* Role-specific heading and description */
+
+    const heading =
+        document.getElementById("dashboardHeading");
+
+    const description =
+        document.getElementById("dashboardDescription");
 
     if (heading) {
-        if (user.role === "admin") {
-            heading.textContent = "Welcome to HunarHub Admin Dashboard";
-        } else if (user.role === "entrepreneur") {
-            heading.textContent = "Welcome to HunarHub Entrepreneur Dashboard";
+        if (isAdmin) {
+            heading.textContent =
+                "Welcome to HunarHub Admin Dashboard";
+        } else if (isEntrepreneur) {
+            heading.textContent =
+                "Welcome to HunarHub Entrepreneur Dashboard";
+        } else if (isCustomer) {
+            heading.textContent =
+                "Welcome to HunarHub Customer Dashboard";
         } else {
-            heading.textContent = "Welcome to HunarHub Customer Dashboard";
+            heading.textContent =
+                "Welcome to HunarHub Dashboard";
         }
     }
 
     if (description) {
-        if (user.role === "admin") {
+        if (isAdmin) {
             description.textContent =
                 "Manage entrepreneurs, categories, skills and complaints.";
-        } else if (user.role === "entrepreneur") {
+        } else if (isEntrepreneur) {
             description.textContent =
                 "Manage your products, orders, earnings and service requests.";
-        } else {
+        } else if (isCustomer) {
             description.textContent =
                 "Explore products, manage orders and request services.";
         }
@@ -120,7 +205,7 @@ function configureDashboard() {
 async function getServiceRequests() {
     try {
         const response = await fetch(
-            "https://hunarhub-backend-i8s7.onrender.com/api/service-requests/entrepreneur",
+            `${API_BASE}/api/service-requests/entrepreneur`,
             {
                 headers: {
                     Authorization: "Bearer " + token
@@ -129,7 +214,8 @@ async function getServiceRequests() {
         );
 
         const data = await response.json();
-        const requestList = document.getElementById("requestList");
+        const requestList =
+            document.getElementById("requestList");
 
         if (!requestList) return;
 
@@ -139,10 +225,11 @@ async function getServiceRequests() {
             return;
         }
 
-        requestList.innerHTML = "";
+        requestList.replaceChildren();
 
         if (!data.requests || data.requests.length === 0) {
-            requestList.textContent = "No service requests found.";
+            requestList.textContent =
+                "No service requests found.";
             return;
         }
 
@@ -151,33 +238,40 @@ async function getServiceRequests() {
             card.className = "product-card";
 
             const title = document.createElement("h3");
-            title.textContent = request.service || "Service request";
+            title.textContent =
+                request.service || "Service request";
 
             const customer = document.createElement("p");
             customer.textContent =
-                "Customer: " + (request.customer?.name || "Unknown");
+                "Customer: " +
+                (request.customer?.name || "Unknown");
 
             const description = document.createElement("p");
             description.textContent =
-                "Description: " + (request.description || "Not provided");
+                "Description: " +
+                (request.description || "Not provided");
 
             const date = document.createElement("p");
-            date.textContent = "Date: " +
+            date.textContent =
+                "Date: " +
                 (request.date
                     ? new Date(request.date).toLocaleDateString()
                     : "Not specified");
 
             const status = document.createElement("p");
-            status.textContent = "Status: " + (request.status || "Pending");
+            status.textContent =
+                "Status: " + (request.status || "Pending");
 
             card.append(title, customer, description, date, status);
 
             ["Accepted", "Rejected"].forEach(newStatus => {
                 const button = document.createElement("button");
                 button.textContent = newStatus;
-                button.addEventListener("click", () =>
-                    updateStatus(request._id, newStatus)
-                );
+
+                button.addEventListener("click", () => {
+                    updateStatus(request._id, newStatus);
+                });
+
                 card.appendChild(button);
             });
 
@@ -185,8 +279,13 @@ async function getServiceRequests() {
         });
     } catch (error) {
         console.error("Service request error:", error);
+
         const list = document.getElementById("requestList");
-        if (list) list.textContent = "Unable to load service requests.";
+
+        if (list) {
+            list.textContent =
+                "Unable to load service requests.";
+        }
     }
 }
 
@@ -197,7 +296,7 @@ async function getServiceRequests() {
 async function updateStatus(id, status) {
     try {
         const response = await fetch(
-            `https://hunarhub-backend-i8s7.onrender.com/api/service-requests/update/${id}`,
+            `${API_BASE}/api/service-requests/update/${id}`,
             {
                 method: "PUT",
                 headers: {
@@ -209,9 +308,15 @@ async function updateStatus(id, status) {
         );
 
         const data = await response.json();
-        alert(data.message || (response.ok ? "Request updated." : "Update failed."));
 
-        if (response.ok) await getServiceRequests();
+        alert(
+            data.message ||
+            (response.ok ? "Request updated." : "Update failed.")
+        );
+
+        if (response.ok) {
+            await getServiceRequests();
+        }
     } catch (error) {
         console.error("Update service request error:", error);
         alert("Unable to update the service request.");
@@ -225,7 +330,7 @@ async function updateStatus(id, status) {
 async function getEntrepreneurOrders() {
     try {
         const response = await fetch(
-            "https://hunarhub-backend-i8s7.onrender.com/api/orders/entrepreneur",
+            `${API_BASE}/api/orders/entrepreneur`,
             {
                 headers: {
                     Authorization: "Bearer " + token
@@ -234,7 +339,8 @@ async function getEntrepreneurOrders() {
         );
 
         const data = await response.json();
-        const ordersList = document.getElementById("recentOrders");
+        const ordersList =
+            document.getElementById("recentOrders");
 
         if (!ordersList) return;
 
@@ -244,7 +350,7 @@ async function getEntrepreneurOrders() {
             return;
         }
 
-        ordersList.innerHTML = "";
+        ordersList.replaceChildren();
 
         if (!data.orders || data.orders.length === 0) {
             ordersList.textContent = "No orders found.";
@@ -256,20 +362,25 @@ async function getEntrepreneurOrders() {
             card.className = "product-card";
 
             const title = document.createElement("h3");
-            title.textContent = order.product?.name || "Product";
+            title.textContent =
+                order.product?.name || "Product";
 
             const customer = document.createElement("p");
             customer.textContent =
-                "Customer: " + (order.customer?.name || "Unknown");
+                "Customer: " +
+                (order.customer?.name || "Unknown");
 
             const quantity = document.createElement("p");
-            quantity.textContent = "Quantity: " + (order.quantity ?? 0);
+            quantity.textContent =
+                "Quantity: " + (order.quantity ?? 0);
 
             const price = document.createElement("p");
-            price.textContent = "Total Price: ₹" + (order.totalPrice ?? 0);
+            price.textContent =
+                "Total Price: ₹" + (order.totalPrice ?? 0);
 
             const status = document.createElement("p");
-            status.textContent = "Status: " + (order.status || "Pending");
+            status.textContent =
+                "Status: " + (order.status || "Pending");
 
             card.append(title, customer, quantity, price, status);
 
@@ -280,9 +391,11 @@ async function getEntrepreneurOrders() {
             ].forEach(([label, statusValue]) => {
                 const button = document.createElement("button");
                 button.textContent = label;
-                button.addEventListener("click", () =>
-                    updateOrderStatus(order._id, statusValue)
-                );
+
+                button.addEventListener("click", () => {
+                    updateOrderStatus(order._id, statusValue);
+                });
+
                 card.appendChild(button);
             });
 
@@ -290,8 +403,12 @@ async function getEntrepreneurOrders() {
         });
     } catch (error) {
         console.error("Entrepreneur orders error:", error);
+
         const list = document.getElementById("recentOrders");
-        if (list) list.textContent = "Unable to load orders.";
+
+        if (list) {
+            list.textContent = "Unable to load orders.";
+        }
     }
 }
 
@@ -302,7 +419,7 @@ async function getEntrepreneurOrders() {
 async function updateOrderStatus(id, status) {
     try {
         const response = await fetch(
-            `https://hunarhub-backend-i8s7.onrender.com/api/orders/update/${id}`,
+            `${API_BASE}/api/orders/update/${id}`,
             {
                 method: "PUT",
                 headers: {
@@ -314,7 +431,11 @@ async function updateOrderStatus(id, status) {
         );
 
         const data = await response.json();
-        alert(data.message || (response.ok ? "Order updated." : "Update failed."));
+
+        alert(
+            data.message ||
+            (response.ok ? "Order updated." : "Update failed.")
+        );
 
         if (response.ok) {
             await getEntrepreneurOrders();
@@ -333,7 +454,7 @@ async function updateOrderStatus(id, status) {
 async function loadEarnings() {
     try {
         const response = await fetch(
-            "https://hunarhub-backend-i8s7.onrender.com/api/entrepreneurs/earnings",
+            `${API_BASE}/api/entrepreneurs/earnings`,
             {
                 headers: {
                     Authorization: "Bearer " + token
@@ -344,7 +465,10 @@ async function loadEarnings() {
         const data = await response.json();
 
         if (!response.ok) {
-            console.error("Earnings error:", data.message);
+            console.error(
+                "Earnings error:",
+                data.message || "Unable to load earnings."
+            );
             return;
         }
 
@@ -358,7 +482,10 @@ async function loadEarnings() {
 
         Object.entries(values).forEach(([id, value]) => {
             const element = document.getElementById(id);
-            if (element) element.textContent = value;
+
+            if (element) {
+                element.textContent = value;
+            }
         });
     } catch (error) {
         console.error("Earnings error:", error);
