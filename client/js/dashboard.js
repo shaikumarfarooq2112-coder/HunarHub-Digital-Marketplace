@@ -120,6 +120,9 @@ function configureDashboard() {
     const entrepreneurDashboardSections =
         document.getElementById("entrepreneurDashboardSections");
 
+    const customerQuickLinks =
+    document.getElementById("customerQuickLinks");
+
     /* Navigation visibility */
 
     if (adminLink) {
@@ -134,8 +137,9 @@ function configureDashboard() {
         addProductLink.hidden = !isEntrepreneur;
     }
 
+    
     if (requestServiceLink) {
-        requestServiceLink.hidden = isAdmin;
+        requestServiceLink.hidden = !isCustomer;
     }
 
     if (ordersLink) {
@@ -159,6 +163,11 @@ function configureDashboard() {
     if (entrepreneurDashboardSections) {
         entrepreneurDashboardSections.hidden = !isEntrepreneur;
     }
+    
+    if (customerQuickLinks) {
+        customerQuickLinks.hidden = !isCustomer;
+    }
+
 
     /* Role-specific heading and description */
 
