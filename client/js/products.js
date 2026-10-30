@@ -177,39 +177,33 @@ function searchProducts(){
 }
 
 
-
 // ================= FILTER PRODUCTS =================
 
+function filterProducts(category) {
 
-function filterProducts(category){
-
-
-
-    if(category === "All"){
-
-
+    if (category.toLowerCase() === "all") {
         displayProducts(allProducts);
-
         return;
-
     }
 
+    // Normalize category names before comparing
+    const normalizeCategory = (value) => {
+        return String(value || "")
+            .toLowerCase()
+            .replace(/[\s_-]+/g, "")
+            .trim();
+    };
 
+    const selectedCategory = normalizeCategory(category);
 
-    const filteredProducts =
-    allProducts.filter(product =>
+    const filteredProducts = allProducts.filter(product => {
+    const productCategory = normalizeCategory(product.category);
 
-        product.category === category
-
-    );
-
-
+    return productCategory === selectedCategory;
+});
 
     displayProducts(filteredProducts);
-
-
 }
-
 
 
 // ================= VIEW PRODUCT =================

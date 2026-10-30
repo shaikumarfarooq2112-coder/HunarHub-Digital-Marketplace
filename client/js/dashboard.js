@@ -121,7 +121,7 @@ function configureDashboard() {
         document.getElementById("entrepreneurDashboardSections");
 
     const customerQuickLinks =
-    document.getElementById("customerQuickLinks");
+        document.getElementById("customerQuickLinks");
 
     /* Navigation visibility */
 
@@ -137,7 +137,6 @@ function configureDashboard() {
         addProductLink.hidden = !isEntrepreneur;
     }
 
-    
     if (requestServiceLink) {
         requestServiceLink.hidden = !isCustomer;
     }
@@ -163,11 +162,10 @@ function configureDashboard() {
     if (entrepreneurDashboardSections) {
         entrepreneurDashboardSections.hidden = !isEntrepreneur;
     }
-    
+
     if (customerQuickLinks) {
         customerQuickLinks.hidden = !isCustomer;
     }
-
 
     /* Role-specific heading and description */
 
@@ -223,6 +221,7 @@ async function getServiceRequests() {
         );
 
         const data = await response.json();
+
         const requestList =
             document.getElementById("requestList");
 
@@ -337,6 +336,8 @@ async function updateStatus(id, status) {
 ===================================================== */
 
 async function getEntrepreneurOrders() {
+    console.log("getEntrepreneurOrders() is running");
+
     try {
         const response = await fetch(
             `${API_BASE}/api/orders/entrepreneur`,
@@ -348,10 +349,18 @@ async function getEntrepreneurOrders() {
         );
 
         const data = await response.json();
+
+        console.log("Entrepreneur orders received:", data.orders);
+
         const ordersList =
             document.getElementById("recentOrders");
 
-        if (!ordersList) return;
+        if (!ordersList) {
+            console.warn(
+                'The element with id="recentOrders" was not found in dashboard.html.'
+            );
+            return;
+        }
 
         if (!response.ok) {
             ordersList.textContent =
@@ -362,9 +371,14 @@ async function getEntrepreneurOrders() {
         ordersList.replaceChildren();
 
         if (!data.orders || data.orders.length === 0) {
-            ordersList.textContent = "No orders found.";
-            return;
-        }
+    ordersList.innerHTML = "";
+    const message = document.createElement("div");
+    message.className = "empty-state";
+    message.textContent =
+        "No orders yet. Customer orders will appear here.";
+    ordersList.appendChild(message);
+    return;
+}
 
         data.orders.slice(0, 5).forEach(order => {
             const card = document.createElement("div");

@@ -2016,3 +2016,189 @@ hr {
         min-height: 165px;
     }
 }
+
+/* ================= HUNARHUB DASHBOARD IMPROVEMENTS ================= */
+
+.container {
+    width: min(1100px, 92%);
+    margin: 115px auto 45px;
+}
+
+#dashboardHeading {
+    color: #8B5A2B;
+    text-align: center;
+    font-size: clamp(26px, 3vw, 36px);
+    margin-bottom: 12px;
+}
+
+#dashboardDescription {
+    color: #666;
+    text-align: center;
+    line-height: 1.7;
+    margin: 0 auto 35px;
+    max-width: 700px;
+}
+
+.container section h2 {
+    color: #70451f;
+    margin: 28px 0 20px;
+}
+
+.earnings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 22px;
+    margin: 20px 0 32px;
+    align-items: stretch;
+}
+
+.earnings-card {
+    background: linear-gradient(145deg, #ffffff, #fffaf4);
+    border: 1px solid #ead9c7;
+    border-radius: 14px;
+    padding: 25px 20px;
+    box-shadow: 0 5px 15px rgba(92, 57, 25, 0.07);
+    text-align: center;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    min-width: 0;
+    overflow-wrap: anywhere;
+}
+
+.earnings-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 9px 22px rgba(92, 57, 25, 0.12);
+}
+
+.earnings-card h3 {
+    color: #8B5A2B;
+    margin: 0 0 12px;
+    font-size: 21px;
+}
+
+.earnings-card p {
+    color: #62584f;
+    line-height: 1.6;
+    margin: 0 0 18px;
+}
+
+.earnings-card a {
+    display: inline-block;
+    background: #8B5A2B;
+    color: #fff;
+    padding: 11px 16px;
+    border-radius: 7px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    transition: background 0.2s ease;
+}
+
+.earnings-card a:hover {
+    background: #6f451f;
+}
+
+#entrepreneurDashboardSections > hr {
+    border: 0;
+    border-top: 1px solid #e7d9ca;
+    margin: 32px 0;
+}
+
+#serviceRequestsSection,
+#ordersSection {
+    background: #fff;
+    border: 1px solid #eadfd3;
+    border-radius: 14px;
+    padding: 22px;
+    margin: 25px 0;
+    box-shadow: 0 4px 14px rgba(92, 57, 25, 0.05);
+}
+
+#requestList,
+#recentOrders {
+    line-height: 1.7;
+    overflow-wrap: anywhere;
+}
+
+@media (max-width: 600px) {
+    .container {
+        width: 94%;
+        margin-top: 95px;
+    }
+
+    .earnings-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .earnings-card {
+        padding: 21px 16px;
+    }
+
+    #serviceRequestsSection,
+    #ordersSection {
+        padding: 16px;
+    }
+}
+/* ================= FOOTER ================= */
+
+.site-footer {
+    background: #70451f;
+    color: #ffffff;
+    text-align: center;
+    padding: 22px 15px;
+    margin-top: 50px;
+    line-height: 1.7;
+}
+
+.site-footer p {
+    margin: 5px 0;
+    font-size: 14px;
+}
+
+.site-footer strong {
+    color: #FFD27F;
+}
+
+/* ================= EMPTY STATE ================= */
+
+.empty-state {
+    background: #fffaf4;
+    border: 1px dashed #c9a47d;
+    border-radius: 12px;
+    padding: 25px;
+    text-align: center;
+    color: #70451f;
+    margin: 20px 0;
+}
+
+/* ================= FORM MESSAGES ================= */
+
+.success-message {
+    color: #218838;
+    background: #eaf7ed;
+    padding: 12px;
+    border-radius: 7px;
+    margin: 12px 0;
+}
+
+.error-message {
+    color: #b02a37;
+    background: #fbeaec;
+    padding: 12px;
+    border-radius: 7px;
+    margin: 12px 0;
+}
+/* ================= FIX DASHBOARD TOP SPACING ================= */
+
+.container {
+    margin: 125px auto 45px !important;
+    padding: 25px 25px 35px !important;
+}
+
+/* Mobile spacing */
+@media (max-width: 768px) {
+    .container {
+        margin: 180px auto 30px !important;
+        padding: 25px 15px 30px !important;
+    }
+}

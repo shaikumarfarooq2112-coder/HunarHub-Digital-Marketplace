@@ -1,0 +1,155 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HunarHub Dashboard</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <div class="navbar">
+        <h2>HunarHub</h2>
+
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="entrepreneurs.html">Entrepreneurs</a>
+
+            <!-- Admin-only links -->
+            <a href="admin.html" id="adminLink" hidden>Admin</a>
+            <a href="category-skills.html" id="categorySkillsLink" hidden>
+                Category &amp; Skills
+            </a>
+
+            <!-- Entrepreneur-only link -->
+            <a href="add-product.html" id="addProductLink" hidden>
+                Add Product
+            </a>
+
+            <!-- Customer and entrepreneur links -->
+            <a href="service-request.html" id="requestServiceLink" hidden>
+                Request Service
+            </a>
+            <a href="orders.html" id="ordersLink" hidden>Orders</a>
+            <a href="profile.html" id="profileLink" hidden>Profile</a>
+
+            <!-- Available to all logged-in roles -->
+            <a href="complaints.html" id="complaintsLink" hidden>
+                Complaints
+            </a>
+
+            <a href="#" id="logoutLink">Logout</a>
+        </div>
+    </div>
+
+    <!-- DASHBOARD CONTENT -->
+    <main class="container">
+
+        <h1 id="dashboardHeading">Welcome to HunarHub Dashboard</h1>
+
+        <p id="dashboardDescription">
+            Manage your products, orders and activities here.
+        </p>
+
+        <!-- ADMIN SHORTCUTS -->
+        <section id="adminQuickLinks" hidden>
+            <h2>Admin Management</h2>
+
+            <div class="earnings-grid">
+
+                <div class="earnings-card">
+                    <h3>Entrepreneurs</h3>
+                    <p>View entrepreneur profiles.</p>
+                    <a href="entrepreneurs.html">View Entrepreneurs</a>
+                </div>
+
+                <div class="earnings-card">
+                    <h3>Categories &amp; Skills</h3>
+                    <p>Manage marketplace categories and skills.</p>
+                    <a href="category-skills.html">Manage Categories &amp; Skills</a>
+                </div>
+
+                <div class="earnings-card">
+                    <h3>Complaints</h3>
+                    <p>Review submitted complaints.</p>
+                    <a href="complaints.html">Manage Complaints</a>
+                </div>
+
+                <div class="earnings-card">
+                    <h3>Admin Panel</h3>
+                    <p>Open the administration page.</p>
+                    <a href="admin.html">Open Admin</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ENTREPRENEUR-ONLY DASHBOARD SECTIONS -->
+        <div id="entrepreneurDashboardSections" hidden>
+
+            <hr>
+
+            <!-- EARNINGS OVERVIEW -->
+            <section class="earnings-section" id="earningsSection">
+                <h2>Earnings Overview</h2>
+
+                <div class="earnings-grid">
+
+                    <div class="earnings-card">
+                        <h3 id="totalEarnings">₹0</h3>
+                        <p>Total Earnings</p>
+                    </div>
+
+                    <div class="earnings-card">
+                        <h3 id="totalSales">₹0</h3>
+                        <p>Total Sales</p>
+                    </div>
+
+                    <div class="earnings-card">
+                        <h3 id="completedOrders">0</h3>
+                        <p>Completed Orders</p>
+                    </div>
+
+                    <div class="earnings-card">
+                        <h3 id="pendingOrders">0</h3>
+                        <p>Pending Orders</p>
+                    </div>
+
+                    <div class="earnings-card">
+                        <h3 id="confirmedOrders">0</h3>
+                        <p>Confirmed Orders</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <hr>
+
+            <!-- SERVICE REQUESTS -->
+            <section id="serviceRequestsSection">
+                <h2>Service Requests</h2>
+                <div id="requestList">Loading requests...</div>
+            </section>
+
+            <hr>
+
+            <!-- RECENT ORDERS -->
+            <section id="ordersSection">
+                <h2>Recent Orders</h2>
+                <div id="recentOrders">Loading orders...</div>
+            </section>
+
+        </div>
+
+    </main>
+
+    <!-- DASHBOARD JAVASCRIPT -->
+    <script src="js/dashboard.js"></script>
+
+</body>
+</html>

@@ -210,87 +210,55 @@ async function loadComplaints() {
         ) {
 
             complaintList.innerHTML = `
-                <div class="empty-message">
-                    No complaints submitted yet.
-                </div>
-            `;
+    <div class="empty-state">
+        No complaints submitted yet. If you face an issue, you can submit a complaint here.
+    </div>
+`;
 
             return;
 
         }
 
 
-        data.complaints.forEach(
-            complaint => {
+        data.complaints.forEach((complaint) => {
 
-                const card =
-                    document.createElement(
-                        "div"
-                    );
+    const card = document.createElement("div");
+    card.className = "product-card";
 
+    const heading = document.createElement("h3");
+    heading.textContent = complaint.subject || "Complaint";
 
-                card.className =
-                    "product-card";
+    const description = document.createElement("p");
+    description.textContent =
+        "Description: " + (complaint.description || "Not provided");
 
+    const status = document.createElement("p");
+    status.textContent =
+        "Status: " + (complaint.status || "Pending");
 
-                card.innerHTML = `
+    const adminResponse = document.createElement("p");
+    adminResponse.textContent =
+        "Admin Response: " +
+        (complaint.adminResponse || "Waiting for admin response");
 
-                    <h3>
-                        ${complaint.subject}
-                    </h3>
+    const submitted = document.createElement("p");
+    submitted.textContent =
+        "Submitted: " +
+        (complaint.createdAt
+            ? new Date(complaint.createdAt).toLocaleDateString()
+            : "Not available");
 
-                    <p>
-                        <strong>
-                            Description:
-                        </strong>
-                        ${complaint.description}
-                    </p>
+    card.append(
+        heading,
+        description,
+        status,
+        adminResponse,
+        submitted
+    );
 
-                    <p>
-                        <strong>
-                            Status:
-                        </strong>
+    complaintList.appendChild(card);
 
-                        <span>
-                            ${complaint.status}
-                        </span>
-
-                    </p>
-
-                    <p>
-                        <strong>
-                            Admin Response:
-                        </strong>
-
-                        ${
-                            complaint.adminResponse
-                            || "Waiting for admin response"
-                        }
-
-                    </p>
-
-                    <p>
-                        <strong>
-                            Submitted:
-                        </strong>
-
-                        ${
-                            new Date(
-                                complaint.createdAt
-                            ).toLocaleDateString()
-                        }
-
-                    </p>
-
-                `;
-
-
-                complaintList.appendChild(
-                    card
-                );
-
-            }
-        );
+});
 
     }
     catch (error) {

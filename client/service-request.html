@@ -1,151 +1,271 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
-
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>HunarHub | Request Service</title>
+    <title>HunarHub | My Service Requests</title>
 
     <link rel="stylesheet" href="css/style.css">
 
+    <style>
+        /* ================= PAGE LAYOUT ================= */
+
+        .service-page {
+            max-width: 1000px;
+            margin: 110px auto 40px;
+            padding: 20px;
+        }
+
+        .section-heading {
+            color: #8B5A2B;
+            margin-bottom: 10px;
+        }
+
+        .section-description {
+            color: #666;
+            margin-bottom: 25px;
+        }
+
+        .form-card {
+            background: #fff;
+            padding: 25px;
+            margin-bottom: 35px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        #serviceRequestForm label {
+            display: block;
+            margin: 15px 0 7px;
+            font-weight: 600;
+        }
+
+        #serviceRequestForm input,
+        #serviceRequestForm select,
+        #serviceRequestForm textarea {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font: inherit;
+        }
+
+        #serviceRequestForm textarea {
+            resize: vertical;
+        }
+
+        #serviceRequestForm button {
+            margin-top: 18px;
+            padding: 12px 20px;
+            background: #8B5A2B;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        #serviceRequestForm button:hover {
+            background: #6f451f;
+        }
+
+        /* ================= REQUEST HISTORY ================= */
+
+        #myRequests {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 20px;
+        }
+
+        .request-card {
+            background: #fff;
+            padding: 22px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-left: 5px solid #8B5A2B;
+            overflow-wrap: anywhere;
+        }
+
+        .request-card h3 {
+            color: #8B5A2B;
+            margin-top: 0;
+            margin-bottom: 15px;
+        }
+
+        .request-card p {
+            margin: 10px 0;
+            line-height: 1.5;
+        }
+
+        .request-status {
+            margin-top: 18px !important;
+            padding-top: 12px;
+            border-top: 1px solid #eee;
+        }
+
+        .status-pending {
+            color: #996515;
+            font-weight: bold;
+        }
+
+        .status-accepted {
+            color: #218838;
+            font-weight: bold;
+        }
+
+        .status-rejected {
+            color: #c82333;
+            font-weight: bold;
+        }
+
+        .request-message {
+            background: #fff;
+            padding: 18px;
+            border-radius: 8px;
+            color: #555;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 600px) {
+            .service-page {
+                padding: 15px;
+                margin-top: 90px;
+            }
+
+            .form-card {
+                padding: 18px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<!-- ================= NAVBAR ================= -->
+    <!-- ================= NAVBAR ================= -->
 
-<div class="navbar">
+    <div class="navbar">
+        <h2>HunarHub</h2>
 
-    <h2>HunarHub</h2>
-
-    <div class="nav-links">
-
-        <a href="index.html">Home</a>
-
-        <a href="dashboard.html">Dashboard</a>
-
-        <a href="products.html">Products</a>
-
-        <a href="service-request.html">
-            My Requests
-        </a>
-
-        <a href="profile.html">Profile</a>
-
-        <a href="#" onclick="logout()">Logout</a>
-
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="products.html">Products</a>
+            <a href="service-request.html">My Requests</a>
+            <a href="profile.html">Profile</a>
+            <a href="#" id="logoutLink">Logout</a>
+        </div>
     </div>
 
-</div>
+
+    <!-- ================= SERVICE REQUEST FORM ================= -->
+
+    <main class="service-page">
+
+        <section>
+            <h1 class="section-heading">Request a Service</h1>
+
+            <p class="section-description">
+                Connect with a local entrepreneur and request their service.
+            </p>
+
+            <div class="form-card">
+
+                <form id="serviceRequestForm">
+
+                    <label for="entrepreneurId">Entrepreneur</label>
+
+                    <select id="entrepreneurId" required>
+                        <option value="">Select Entrepreneur</option>
+                    </select>
 
 
-<!-- ================= SERVICE REQUEST ================= -->
+                    <label for="service">Service</label>
 
-<div class="container">
-
-    <h1>Request a Service</h1>
-
-    <p>
-        Connect with a local entrepreneur and request their service.
-    </p>
-
-
-    <div class="form-card">
-
-        <form id="serviceRequestForm">
+                    <input
+                        type="text"
+                        id="service"
+                        placeholder="Example: Pottery, Tailoring, Wood Craft"
+                        required
+                    >
 
 
-            <!-- Entrepreneur -->
+                    <label for="description">Description</label>
 
-            <label for="entrepreneurId">
-                Entrepreneur
-            </label>
-
-            <select
-                id="entrepreneurId"
-                required>
-
-                <option value="">
-                    Select Entrepreneur
-                </option>
-
-            </select>
+                    <textarea
+                        id="description"
+                        rows="5"
+                        placeholder="Describe the service you need..."
+                        required
+                    ></textarea>
 
 
-            <!-- Service -->
+                    <label for="date">Preferred Date</label>
 
-            <label for="service">
-                Service
-            </label>
+                    <input
+                        type="date"
+                        id="date"
+                        required
+                    >
 
-            <input
-                type="text"
-                id="service"
-                placeholder="Example: Pottery, Tailoring, Wood Craft"
-                required>
+                    <button type="submit">
+                        Send Service Request
+                    </button>
 
+                </form>
 
-            <!-- Description -->
-
-            <label for="description">
-                Description
-            </label>
-
-            <textarea
-                id="description"
-                rows="5"
-                placeholder="Describe the service you need..."
-                required></textarea>
+            </div>
+        </section>
 
 
-            <!-- Date -->
+        <!-- ================= MY SERVICE REQUESTS ================= -->
 
-            <label for="date">
-                Preferred Date
-            </label>
+        <section id="requestHistory">
 
-            <input
-                type="date"
-                id="date"
-                required>
+            <h2 class="section-heading">My Service Requests</h2>
 
+            <p class="section-description">
+                View your submitted requests and check whether the entrepreneur
+                has accepted or rejected them.
+            </p>
 
-            <br>
+            <div id="myRequests" aria-live="polite">
+                <p class="request-message">Loading your requests...</p>
+            </div>
 
+        </section>
 
-            <button type="submit">
-                Send Service Request
-            </button>
-
-
-        </form>
-
-    </div>
-
-</div>
+    </main>
 
 
-<script src="js/service-request.js"></script>
+    <!-- ================= JAVASCRIPT ================= -->
 
+    <script src="js/service-request.js"></script>
 
-<script>
+    <script>
+        document.getElementById("logoutLink").addEventListener("click", function (event) {
+            event.preventDefault();
 
-function logout(){
+            localStorage.removeItem("token");
 
-    localStorage.removeItem("token");
+            alert("Logout successful");
 
-    alert("Logout successful");
+            window.location.href = "login.html";
+        });
 
-    window.location.href = "login.html";
+        // Prevent selecting a date in the past.
+        const dateInput = document.getElementById("date");
 
-}
+        const today = new Date();
+        const localToday = new Date(
+            today.getTime() - today.getTimezoneOffset() * 60000
+        ).toISOString().split("T")[0];
 
-</script>
-
+        dateInput.min = localToday;
+    </script>
 
 </body>
-
 </html>
